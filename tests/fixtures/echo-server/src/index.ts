@@ -25,7 +25,7 @@ server.tool(
   }),
 );
 
-server.resource("info://server", "Server information", async () => ({
+server.resource("Server information", "info://server", async () => ({
   contents: [
     {
       uri: "info://server",

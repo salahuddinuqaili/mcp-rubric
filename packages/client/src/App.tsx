@@ -1,10 +1,45 @@
-export function App() {
+import { AppLayout } from "@/components/AppLayout";
+import { wsClient } from "@/lib/ws-client";
+import { CollectionDetailPage } from "@/pages/CollectionDetailPage";
+import { CollectionsPage } from "@/pages/CollectionsPage";
+import { ConnectPage } from "@/pages/ConnectPage";
+import { ExplorerPage } from "@/pages/ExplorerPage";
+import { HistoryPage } from "@/pages/HistoryPage";
+import { PromptDetailPage } from "@/pages/PromptDetailPage";
+import { ResourceDetailPage } from "@/pages/ResourceDetailPage";
+import { ToolDetailPage } from "@/pages/ToolDetailPage";
+import { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router";
+
+function PlaceholderPage({ title }: { title: string }) {
   return (
-    <div className="flex h-screen items-center justify-center bg-neutral-950 text-neutral-50">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold tracking-tight">MCP Studio</h1>
-        <p className="mt-3 text-lg text-neutral-400">Postman + ESLint for MCP servers</p>
-      </div>
+    <div className="flex h-full items-center justify-center text-muted-foreground">
+      {title} — coming in a later phase
     </div>
+  );
+}
+
+export function App() {
+  useEffect(() => {
+    wsClient.connect();
+    return () => wsClient.disconnect();
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route index element={<ConnectPage />} />
+          <Route path="explorer" element={<ExplorerPage />} />
+          <Route path="explorer/tools/:name" element={<ToolDetailPage />} />
+          <Route path="explorer/resources/*" element={<ResourceDetailPage />} />
+          <Route path="explorer/prompts/:name" element={<PromptDetailPage />} />
+          <Route path="history" element={<HistoryPage />} />
+          <Route path="scanner" element={<PlaceholderPage title="Scanner" />} />
+          <Route path="collections" element={<CollectionsPage />} />
+          <Route path="collections/:id" element={<CollectionDetailPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
