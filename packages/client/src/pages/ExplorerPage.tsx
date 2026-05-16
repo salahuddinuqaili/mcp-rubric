@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
 import { useEffect } from "react";
+import { Link } from "react-router";
 
 export function ExplorerPage() {
   const activeConnectionId = useConnectionStore((s) => s.activeConnectionId);
@@ -53,33 +54,30 @@ export function ExplorerPage() {
             <p className="text-muted-foreground">No tools exposed by this server</p>
           ) : (
             tools.map((tool) => (
-              <Card key={tool.name}>
-                <CardHeader className="py-3">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    {tool.name}
-                    {tool.annotations?.readOnlyHint && (
-                      <Badge variant="secondary" className="text-xs">
-                        read-only
-                      </Badge>
-                    )}
-                    {tool.annotations?.destructiveHint && (
-                      <Badge variant="destructive" className="text-xs">
-                        destructive
-                      </Badge>
-                    )}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 pb-3">
-                  <p className="text-sm text-muted-foreground">
-                    {tool.description || "No description"}
-                  </p>
-                  {tool.inputSchema && Object.keys(tool.inputSchema).length > 0 && (
-                    <pre className="mt-2 rounded-md bg-muted p-2 text-xs overflow-auto">
-                      {JSON.stringify(tool.inputSchema, null, 2)}
-                    </pre>
-                  )}
-                </CardContent>
-              </Card>
+              <Link key={tool.name} to={`/explorer/tools/${encodeURIComponent(tool.name)}`}>
+                <Card className="hover:border-primary/50 transition-colors cursor-pointer">
+                  <CardHeader className="py-3">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      {tool.name}
+                      {tool.annotations?.readOnlyHint && (
+                        <Badge variant="secondary" className="text-xs">
+                          read-only
+                        </Badge>
+                      )}
+                      {tool.annotations?.destructiveHint && (
+                        <Badge variant="destructive" className="text-xs">
+                          destructive
+                        </Badge>
+                      )}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 pb-3">
+                    <p className="text-sm text-muted-foreground">
+                      {tool.description || "No description"}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))
           )}
         </TabsContent>
@@ -91,24 +89,29 @@ export function ExplorerPage() {
             <p className="text-muted-foreground">No resources exposed by this server</p>
           ) : (
             resources.map((resource) => (
-              <Card key={resource.uri}>
-                <CardHeader className="py-3">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    {resource.name}
-                    {resource.mimeType && (
-                      <Badge variant="outline" className="text-xs">
-                        {resource.mimeType}
-                      </Badge>
+              <Link
+                key={resource.uri}
+                to={`/explorer/resources/${encodeURIComponent(resource.uri)}`}
+              >
+                <Card className="hover:border-primary/50 transition-colors cursor-pointer">
+                  <CardHeader className="py-3">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      {resource.name}
+                      {resource.mimeType && (
+                        <Badge variant="outline" className="text-xs">
+                          {resource.mimeType}
+                        </Badge>
+                      )}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 pb-3">
+                    <p className="text-xs text-muted-foreground font-mono">{resource.uri}</p>
+                    {resource.description && (
+                      <p className="mt-1 text-sm text-muted-foreground">{resource.description}</p>
                     )}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 pb-3">
-                  <p className="text-xs text-muted-foreground font-mono">{resource.uri}</p>
-                  {resource.description && (
-                    <p className="mt-1 text-sm text-muted-foreground">{resource.description}</p>
-                  )}
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))
           )}
         </TabsContent>
@@ -120,34 +123,28 @@ export function ExplorerPage() {
             <p className="text-muted-foreground">No prompts exposed by this server</p>
           ) : (
             prompts.map((prompt) => (
-              <Card key={prompt.name}>
-                <CardHeader className="py-3">
-                  <CardTitle className="text-base">{prompt.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 pb-3">
-                  <p className="text-sm text-muted-foreground">
-                    {prompt.description || "No description"}
-                  </p>
-                  {prompt.arguments && prompt.arguments.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      <p className="text-xs font-medium text-muted-foreground">Arguments:</p>
-                      {prompt.arguments.map((arg) => (
-                        <div key={arg.name} className="flex items-center gap-2 text-xs">
-                          <code className="rounded bg-muted px-1 py-0.5">{arg.name}</code>
-                          {arg.required && (
-                            <Badge variant="secondary" className="text-[10px]">
-                              required
-                            </Badge>
-                          )}
-                          {arg.description && (
-                            <span className="text-muted-foreground">{arg.description}</span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <Link key={prompt.name} to={`/explorer/prompts/${encodeURIComponent(prompt.name)}`}>
+                <Card className="hover:border-primary/50 transition-colors cursor-pointer">
+                  <CardHeader className="py-3">
+                    <CardTitle className="text-base">{prompt.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 pb-3">
+                    <p className="text-sm text-muted-foreground">
+                      {prompt.description || "No description"}
+                    </p>
+                    {prompt.arguments && prompt.arguments.length > 0 && (
+                      <div className="mt-2 flex gap-1 flex-wrap">
+                        {prompt.arguments.map((arg) => (
+                          <Badge key={arg.name} variant="secondary" className="text-xs">
+                            {arg.name}
+                            {arg.required && "*"}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
             ))
           )}
         </TabsContent>

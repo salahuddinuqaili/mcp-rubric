@@ -1,5 +1,12 @@
-import type { WsEvent, WsRequest, WsResponse } from "@mcp-studio/shared";
+import { randomUUID } from "node:crypto";
+import type { ToolCallRecord, WsEvent, WsRequest, WsResponse } from "@mcp-studio/shared";
 import type { WSContext } from "hono/ws";
+import {
+  insertResourceReadRecord,
+  insertToolCallRecord,
+  updateResourceReadRecord,
+  updateToolCallRecord,
+} from "../db/history-repository.js";
 import type { ConnectionManager } from "../mcp/connection-manager.js";
 
 type WsClient = WSContext<WebSocket>;
@@ -98,6 +105,136 @@ export class WsHandler {
           id: request.id,
           type: "list-prompts",
           payload: { prompts },
+        };
+      }
+
+      case "call-tool": {
+        const {
+          connectionId,
+          toolName,
+          arguments: args,
+        } = request.payload as {
+          connectionId: string;
+          toolName: string;
+          arguments: Record<string, unknown>;
+        };
+
+        const recordId = randomUUID();
+        const startedAt = new Date().toISOString();
+        const connectionName = this.manager.getConnectionName(connectionId);
+
+        const record: ToolCallRecord = {
+          id: recordId,
+          connectionId,
+          connectionName,
+          toolName,
+          arguments: args,
+          result: null,
+          status: "pending",
+          startedAt,
+        };
+        insertToolCallRecord(record);
+
+        const start = Date.now();
+        try {
+          const result = await this.manager.callTool(connectionId, toolName, args);
+          const durationMs = Date.now() - start;
+          const completedAt = new Date().toISOString();
+          const status = result.isError ? "error" : "success";
+
+          updateToolCallRecord(recordId, { result, status, completedAt, durationMs });
+          record.result = result;
+          record.status = status;
+          record.completedAt = completedAt;
+          record.durationMs = durationMs;
+        } catch (err) {
+          const durationMs = Date.now() - start;
+          const completedAt = new Date().toISOString();
+          updateToolCallRecord(recordId, {
+            result: { content: [{ type: "text", text: String(err) }], isError: true },
+            status: "error",
+            completedAt,
+            durationMs,
+          });
+          record.result = { content: [{ type: "text", text: String(err) }], isError: true };
+          record.status = "error";
+          record.completedAt = completedAt;
+          record.durationMs = durationMs;
+        }
+
+        return {
+          id: request.id,
+          type: "call-tool",
+          payload: { record },
+        };
+      }
+
+      case "read-resource": {
+        const { connectionId, uri } = request.payload as {
+          connectionId: string;
+          uri: string;
+        };
+
+        const recordId = randomUUID();
+        const timestamp = new Date().toISOString();
+        const connectionName = this.manager.getConnectionName(connectionId);
+
+        insertResourceReadRecord({
+          id: recordId,
+          connectionId,
+          connectionName,
+          resourceUri: uri,
+          result: null,
+          status: "pending",
+          timestamp,
+        });
+
+        const start = Date.now();
+        try {
+          const result = await this.manager.readResource(connectionId, uri);
+          const durationMs = Date.now() - start;
+
+          updateResourceReadRecord(recordId, { result, status: "success", durationMs });
+
+          return {
+            id: request.id,
+            type: "read-resource",
+            payload: {
+              record: {
+                id: recordId,
+                connectionId,
+                connectionName,
+                resourceUri: uri,
+                result,
+                status: "success",
+                timestamp,
+                durationMs,
+              },
+            },
+          };
+        } catch (err) {
+          const durationMs = Date.now() - start;
+          updateResourceReadRecord(recordId, { result: null, status: "error", durationMs });
+          throw err;
+        }
+      }
+
+      case "get-prompt": {
+        const {
+          connectionId,
+          promptName,
+          arguments: args,
+        } = request.payload as {
+          connectionId: string;
+          promptName: string;
+          arguments?: Record<string, string>;
+        };
+
+        const result = await this.manager.getPrompt(connectionId, promptName, args);
+        return {
+          id: request.id,
+          type: "get-prompt",
+          payload: result,
         };
       }
 

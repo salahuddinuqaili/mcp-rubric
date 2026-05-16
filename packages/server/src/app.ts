@@ -3,6 +3,7 @@ import { API_PREFIX, WS_PATH } from "@mcp-studio/shared";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { ConnectionManager } from "./mcp/connection-manager.js";
+import { historyRoutes } from "./routes/history.js";
 import { WsHandler } from "./ws/handler.js";
 
 export function createApp() {
@@ -17,6 +18,8 @@ export function createApp() {
   app.get(`${API_PREFIX}/health`, (c) => {
     return c.json({ status: "ok", uptime: process.uptime() });
   });
+
+  app.route("/", historyRoutes);
 
   app.get(
     WS_PATH,

@@ -91,6 +91,67 @@ describe("ConnectionManager with echo-server", () => {
     expect(prompts[0].connectionId).toBe(connectionId);
   });
 
+  it("calls the echo tool and gets correct response", async () => {
+    const connection = await manager.connect("echo-test", {
+      type: "stdio",
+      command: "node",
+      args: [ECHO_SERVER_PATH],
+    });
+    connectionId = connection.config.id;
+
+    const result = await manager.callTool(connectionId, "echo", { text: "hello" });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.content).toHaveLength(1);
+    expect(result.content[0].type).toBe("text");
+    expect(result.content[0].text).toBe("Echo: hello");
+  });
+
+  it("calls the add tool and gets correct result", async () => {
+    const connection = await manager.connect("echo-test", {
+      type: "stdio",
+      command: "node",
+      args: [ECHO_SERVER_PATH],
+    });
+    connectionId = connection.config.id;
+
+    const result = await manager.callTool(connectionId, "add", { a: 3, b: 7 });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.content[0].text).toBe("10");
+  });
+
+  it("reads a resource and gets content", async () => {
+    const connection = await manager.connect("echo-test", {
+      type: "stdio",
+      command: "node",
+      args: [ECHO_SERVER_PATH],
+    });
+    connectionId = connection.config.id;
+
+    const result = await manager.readResource(connectionId, "info://server");
+
+    expect(result.contents).toHaveLength(1);
+    expect(result.contents[0].uri).toBe("info://server");
+    expect(result.contents[0].mimeType).toBe("text/plain");
+    expect(result.contents[0].text).toContain("Echo Server");
+  });
+
+  it("gets a prompt with arguments", async () => {
+    const connection = await manager.connect("echo-test", {
+      type: "stdio",
+      command: "node",
+      args: [ECHO_SERVER_PATH],
+    });
+    connectionId = connection.config.id;
+
+    const result = await manager.getPrompt(connectionId, "greet", { name: "World" });
+
+    expect(result.messages).toHaveLength(1);
+    expect(result.messages[0].role).toBe("user");
+    expect(result.messages[0].content.text).toBe("Say hello to World");
+  });
+
   it("full flow: connect → list-tools → list-resources → list-prompts", async () => {
     const connection = await manager.connect("echo-full-flow", {
       type: "stdio",

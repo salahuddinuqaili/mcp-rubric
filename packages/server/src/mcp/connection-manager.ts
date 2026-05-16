@@ -2,13 +2,16 @@ import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import type {
   ConnectionStatus,
+  ContentBlock,
   McpPrompt,
   McpResource,
   McpResourceTemplate,
   McpTool,
+  ResourceReadResult,
   ServerCapabilities,
   ServerConnection,
   ServerConnectionConfig,
+  ToolCallResult,
   TransportConfig,
 } from "@mcp-studio/shared";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -177,6 +180,51 @@ export class ConnectionManager extends EventEmitter<ConnectionManagerEvents> {
         required: a.required,
       })),
     }));
+  }
+
+  async callTool(
+    connectionId: string,
+    toolName: string,
+    args: Record<string, unknown>,
+  ): Promise<ToolCallResult> {
+    const managed = this.getManaged(connectionId);
+    const result = await managed.client.callTool({ name: toolName, arguments: args });
+    return {
+      content: (result.content as ContentBlock[]) ?? [],
+      isError: result.isError as boolean | undefined,
+    };
+  }
+
+  async readResource(connectionId: string, uri: string): Promise<ResourceReadResult> {
+    const managed = this.getManaged(connectionId);
+    const result = await managed.client.readResource({ uri });
+    return {
+      contents: result.contents.map((c) => ({
+        uri: c.uri,
+        mimeType: c.mimeType,
+        text: "text" in c ? (c.text as string) : undefined,
+      })),
+    };
+  }
+
+  async getPrompt(
+    connectionId: string,
+    promptName: string,
+    args?: Record<string, string>,
+  ): Promise<{ description?: string; messages: Array<{ role: string; content: ContentBlock }> }> {
+    const managed = this.getManaged(connectionId);
+    const result = await managed.client.getPrompt({ name: promptName, arguments: args });
+    return {
+      description: result.description,
+      messages: result.messages.map((m) => ({
+        role: m.role,
+        content: m.content as unknown as ContentBlock,
+      })),
+    };
+  }
+
+  getConnectionName(connectionId: string): string {
+    return this.getManaged(connectionId).config.name;
   }
 
   getConnection(connectionId: string): ServerConnection | undefined {
