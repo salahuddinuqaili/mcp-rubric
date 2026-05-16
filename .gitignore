@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.db
+*.sqlite
+.env
+.env.local
+.vite/
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
