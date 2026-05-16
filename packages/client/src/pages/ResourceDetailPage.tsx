@@ -1,10 +1,11 @@
+import { SaveToCollectionDialog } from "@/components/SaveToCollectionDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { wsClient } from "@/lib/ws-client";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
-import type { ResourceReadRecord } from "@mcp-studio/shared";
+import type { CollectionResourceRead, ResourceReadRecord } from "@mcp-studio/shared";
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 
@@ -60,9 +61,23 @@ export function ResourceDetailPage() {
         )}
       </div>
 
-      <Button onClick={handleRead} disabled={reading || !activeConnectionId}>
-        {reading ? "Reading..." : "Read Resource"}
-      </Button>
+      <div className="flex gap-2">
+        <Button onClick={handleRead} disabled={reading || !activeConnectionId}>
+          {reading ? "Reading..." : "Read Resource"}
+        </Button>
+        {activeConnectionId && uri && (
+          <SaveToCollectionDialog
+            item={
+              {
+                type: "resource-read",
+                id: crypto.randomUUID(),
+                connectionConfig: { type: "stdio", command: "" },
+                resourceUri: uri,
+              } satisfies CollectionResourceRead
+            }
+          />
+        )}
+      </div>
 
       {error && (
         <Card className="border-destructive">

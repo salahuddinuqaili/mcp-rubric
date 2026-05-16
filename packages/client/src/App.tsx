@@ -1,5 +1,7 @@
 import { AppLayout } from "@/components/AppLayout";
 import { wsClient } from "@/lib/ws-client";
+import { CollectionDetailPage } from "@/pages/CollectionDetailPage";
+import { CollectionsPage } from "@/pages/CollectionsPage";
 import { ConnectPage } from "@/pages/ConnectPage";
 import { ExplorerPage } from "@/pages/ExplorerPage";
 import { HistoryPage } from "@/pages/HistoryPage";
@@ -34,7 +36,8 @@ export function App() {
           <Route path="explorer/prompts/:name" element={<PromptDetailPage />} />
           <Route path="history" element={<HistoryPage />} />
           <Route path="scanner" element={<PlaceholderPage title="Scanner" />} />
-          <Route path="collections" element={<PlaceholderPage title="Collections" />} />
+          <Route path="collections" element={<CollectionsPage />} />
+          <Route path="collections/:id" element={<CollectionDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

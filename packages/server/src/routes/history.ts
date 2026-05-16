@@ -1,6 +1,8 @@
 import { API_PREFIX } from "@mcp-studio/shared";
 import { Hono } from "hono";
 import {
+  deleteAllResourceReadRecords,
+  deleteAllToolCallRecords,
   deleteResourceReadRecord,
   deleteToolCallRecord,
   getResourceReadRecords,
@@ -49,6 +51,11 @@ historyRoutes.get(`${API_PREFIX}/history/resource-reads`, (c) => {
   return c.json({ records });
 });
 
+historyRoutes.delete(`${API_PREFIX}/history/tool-calls`, (c) => {
+  const count = deleteAllToolCallRecords();
+  return c.json({ success: true, deleted: count });
+});
+
 historyRoutes.delete(`${API_PREFIX}/history/tool-calls/:id`, (c) => {
   const id = c.req.param("id");
   const deleted = deleteToolCallRecord(id);
@@ -56,6 +63,11 @@ historyRoutes.delete(`${API_PREFIX}/history/tool-calls/:id`, (c) => {
     return c.json({ error: "Record not found" }, 404);
   }
   return c.json({ success: true });
+});
+
+historyRoutes.delete(`${API_PREFIX}/history/resource-reads`, (c) => {
+  const count = deleteAllResourceReadRecords();
+  return c.json({ success: true, deleted: count });
 });
 
 historyRoutes.delete(`${API_PREFIX}/history/resource-reads/:id`, (c) => {

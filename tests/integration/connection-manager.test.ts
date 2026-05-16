@@ -1,6 +1,13 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, describe, expect, it } from "vitest";
+import {
+  createCollection,
+  deleteCollection,
+  getCollectionById,
+  updateCollection,
+} from "../../packages/server/src/db/collections-repository.js";
+import { closeDb } from "../../packages/server/src/db/index.js";
 import { ConnectionManager } from "../../packages/server/src/mcp/connection-manager.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -176,5 +183,83 @@ describe("ConnectionManager with echo-server", () => {
     connectionId = undefined;
 
     expect(manager.getConnection(connection.config.id)).toBeUndefined();
+  });
+});
+
+describe("Collections with echo-server", () => {
+  const manager = new ConnectionManager();
+  let connectionId: string | undefined;
+
+  afterEach(async () => {
+    if (connectionId) {
+      try {
+        await manager.disconnect(connectionId);
+      } catch {
+        // already disconnected
+      }
+      connectionId = undefined;
+    }
+  });
+
+  afterAll(() => {
+    closeDb();
+  });
+
+  it("creates a collection, adds items, runs them sequentially", async () => {
+    // Connect to echo-server
+    const connection = await manager.connect("coll-test", {
+      type: "stdio",
+      command: "node",
+      args: [ECHO_SERVER_PATH],
+    });
+    connectionId = connection.config.id;
+
+    // Create a collection with two items
+    const coll = createCollection("Test Collection", "Integration test");
+    expect(coll.items).toHaveLength(0);
+
+    const updated = updateCollection(coll.id, {
+      items: [
+        {
+          type: "tool-call",
+          id: "item-1",
+          connectionConfig: { type: "stdio", command: "node" },
+          toolName: "echo",
+          arguments: { text: "collection-test" },
+        },
+        {
+          type: "resource-read",
+          id: "item-2",
+          connectionConfig: { type: "stdio", command: "node" },
+          resourceUri: "info://server",
+        },
+      ],
+    });
+    expect(updated?.items).toHaveLength(2);
+
+    // Execute the collection items sequentially
+    const results: Array<{ itemId: string; success: boolean }> = [];
+    const saved = getCollectionById(coll.id);
+    expect(saved).toBeDefined();
+    for (const item of saved?.items ?? []) {
+      try {
+        if (item.type === "tool-call") {
+          await manager.callTool(connectionId, item.toolName, item.arguments);
+        } else if (item.type === "resource-read") {
+          await manager.readResource(connectionId, item.resourceUri);
+        }
+        results.push({ itemId: item.id, success: true });
+      } catch {
+        results.push({ itemId: item.id, success: false });
+      }
+    }
+
+    expect(results).toHaveLength(2);
+    expect(results[0].success).toBe(true);
+    expect(results[1].success).toBe(true);
+
+    // Cleanup
+    deleteCollection(coll.id);
+    expect(getCollectionById(coll.id)).toBeUndefined();
   });
 });

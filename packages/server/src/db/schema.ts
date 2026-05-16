@@ -26,4 +26,12 @@ export const MIGRATIONS = [
   "CREATE INDEX IF NOT EXISTS idx_tool_calls_started_at ON tool_call_records(started_at)",
   "CREATE INDEX IF NOT EXISTS idx_resource_reads_connection ON resource_read_records(connection_id)",
   "CREATE INDEX IF NOT EXISTS idx_resource_reads_timestamp ON resource_read_records(timestamp)",
+  `CREATE TABLE IF NOT EXISTS collections (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    items TEXT NOT NULL DEFAULT '[]',
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
 ];

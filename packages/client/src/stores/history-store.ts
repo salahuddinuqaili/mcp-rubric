@@ -11,6 +11,8 @@ interface HistoryState {
   fetchResourceReads: (filters?: Record<string, string>) => Promise<void>;
   deleteToolCall: (id: string) => Promise<void>;
   deleteResourceRead: (id: string) => Promise<void>;
+  clearAllToolCalls: () => Promise<void>;
+  clearAllResourceReads: () => Promise<void>;
 }
 
 export const useHistoryStore = create<HistoryState>((set, get) => ({
@@ -50,5 +52,15 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
   deleteResourceRead: async (id) => {
     await fetch(`${API_PREFIX}/history/resource-reads/${id}`, { method: "DELETE" });
     set({ resourceReads: get().resourceReads.filter((r) => r.id !== id) });
+  },
+
+  clearAllToolCalls: async () => {
+    await fetch(`${API_PREFIX}/history/tool-calls`, { method: "DELETE" });
+    set({ toolCalls: [] });
+  },
+
+  clearAllResourceReads: async () => {
+    await fetch(`${API_PREFIX}/history/resource-reads`, { method: "DELETE" });
+    set({ resourceReads: [] });
   },
 }));

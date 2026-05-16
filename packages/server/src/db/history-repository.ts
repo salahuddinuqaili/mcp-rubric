@@ -93,6 +93,12 @@ export function deleteToolCallRecord(id: string): boolean {
   return result.changes > 0;
 }
 
+export function deleteAllToolCallRecords(): number {
+  const db = getDb();
+  const result = db.prepare("DELETE FROM tool_call_records").run();
+  return result.changes;
+}
+
 // ============================================================
 // Resource Read Records
 // ============================================================
@@ -172,6 +178,12 @@ export function deleteResourceReadRecord(id: string): boolean {
   const db = getDb();
   const result = db.prepare("DELETE FROM resource_read_records WHERE id = ?").run(id);
   return result.changes > 0;
+}
+
+export function deleteAllResourceReadRecords(): number {
+  const db = getDb();
+  const result = db.prepare("DELETE FROM resource_read_records").run();
+  return result.changes;
 }
 
 // ============================================================

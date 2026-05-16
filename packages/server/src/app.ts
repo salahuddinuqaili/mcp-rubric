@@ -3,6 +3,7 @@ import { API_PREFIX, WS_PATH } from "@mcp-studio/shared";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { ConnectionManager } from "./mcp/connection-manager.js";
+import { collectionsRoutes } from "./routes/collections.js";
 import { historyRoutes } from "./routes/history.js";
 import { WsHandler } from "./ws/handler.js";
 
@@ -20,6 +21,7 @@ export function createApp() {
   });
 
   app.route("/", historyRoutes);
+  app.route("/", collectionsRoutes);
 
   app.get(
     WS_PATH,

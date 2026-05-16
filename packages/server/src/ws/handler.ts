@@ -1,6 +1,13 @@
 import { randomUUID } from "node:crypto";
-import type { ToolCallRecord, WsEvent, WsRequest, WsResponse } from "@mcp-studio/shared";
+import type {
+  CollectionItem,
+  ToolCallRecord,
+  WsEvent,
+  WsRequest,
+  WsResponse,
+} from "@mcp-studio/shared";
 import type { WSContext } from "hono/ws";
+import { getCollectionById } from "../db/collections-repository.js";
 import {
   insertResourceReadRecord,
   insertToolCallRecord,
@@ -238,8 +245,55 @@ export class WsHandler {
         };
       }
 
+      case "run-collection": {
+        const { collectionId, connectionId } = request.payload as {
+          collectionId: string;
+          connectionId: string;
+        };
+
+        const collection = getCollectionById(collectionId);
+        if (!collection) throw new Error("Collection not found");
+
+        const results: Array<{ itemId: string; type: string; success: boolean; error?: string }> =
+          [];
+
+        for (const item of collection.items) {
+          try {
+            await this.executeCollectionItem(item, connectionId);
+            results.push({ itemId: item.id, type: item.type, success: true });
+          } catch (err) {
+            results.push({
+              itemId: item.id,
+              type: item.type,
+              success: false,
+              error: err instanceof Error ? err.message : String(err),
+            });
+          }
+        }
+
+        return {
+          id: request.id,
+          type: "run-collection",
+          payload: { collectionId, results },
+        };
+      }
+
       default:
         throw new Error(`Unknown message type: ${request.type}`);
+    }
+  }
+
+  private async executeCollectionItem(item: CollectionItem, connectionId: string): Promise<void> {
+    switch (item.type) {
+      case "tool-call":
+        await this.manager.callTool(connectionId, item.toolName, item.arguments);
+        break;
+      case "resource-read":
+        await this.manager.readResource(connectionId, item.resourceUri);
+        break;
+      case "prompt-get":
+        await this.manager.getPrompt(connectionId, item.promptName, item.arguments);
+        break;
     }
   }
 

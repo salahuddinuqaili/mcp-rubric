@@ -1,3 +1,4 @@
+import { SaveToCollectionDialog } from "@/components/SaveToCollectionDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { wsClient } from "@/lib/ws-client";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
-import type { ToolCallRecord } from "@mcp-studio/shared";
+import type { CollectionToolCall, ToolCallRecord } from "@mcp-studio/shared";
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 
@@ -91,9 +92,24 @@ export function ToolDetailPage() {
         <span className="text-sm">{tool.name}</span>
       </div>
 
-      <div>
-        <h1 className="text-2xl font-bold">{tool.name}</h1>
-        <p className="text-muted-foreground mt-1">{tool.description || "No description"}</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">{tool.name}</h1>
+          <p className="text-muted-foreground mt-1">{tool.description || "No description"}</p>
+        </div>
+        {activeConnectionId && (
+          <SaveToCollectionDialog
+            item={
+              {
+                type: "tool-call",
+                id: crypto.randomUUID(),
+                connectionConfig: { type: "stdio", command: "" },
+                toolName: tool.name,
+                arguments: formValues,
+              } satisfies CollectionToolCall
+            }
+          />
+        )}
       </div>
 
       {/* Input Form */}

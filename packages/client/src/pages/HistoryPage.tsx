@@ -14,6 +14,8 @@ export function HistoryPage() {
     fetchResourceReads,
     deleteToolCall,
     deleteResourceRead,
+    clearAllToolCalls,
+    clearAllResourceReads,
   } = useHistoryStore();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -33,6 +35,18 @@ export function HistoryPage() {
         </TabsList>
 
         <TabsContent value="tool-calls" className="mt-4 space-y-2">
+          {toolCalls.length > 0 && (
+            <div className="flex justify-end">
+              <Button
+                variant="ghost"
+                size="xs"
+                className="text-destructive"
+                onClick={clearAllToolCalls}
+              >
+                Clear All
+              </Button>
+            </div>
+          )}
           {loading ? (
             <p className="text-muted-foreground">Loading...</p>
           ) : toolCalls.length === 0 ? (
@@ -104,6 +118,18 @@ export function HistoryPage() {
         </TabsContent>
 
         <TabsContent value="resource-reads" className="mt-4 space-y-2">
+          {resourceReads.length > 0 && (
+            <div className="flex justify-end">
+              <Button
+                variant="ghost"
+                size="xs"
+                className="text-destructive"
+                onClick={clearAllResourceReads}
+              >
+                Clear All
+              </Button>
+            </div>
+          )}
           {loading ? (
             <p className="text-muted-foreground">Loading...</p>
           ) : resourceReads.length === 0 ? (
