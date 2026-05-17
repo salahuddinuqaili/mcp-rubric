@@ -59,12 +59,16 @@ export function ToolDetailPage() {
         args = JSON.parse(rawJson || "{}") as Record<string, unknown>;
       } else {
         args = { ...formValues };
-        // Coerce number fields
         for (const [key, schema] of Object.entries(properties)) {
+          // Coerce number fields
           if (schema.type === "number" || schema.type === "integer") {
             if (args[key] !== undefined && args[key] !== "") {
               args[key] = Number(args[key]);
             }
+          }
+          // Remove empty strings for non-required fields
+          if (args[key] === "" && !required.includes(key)) {
+            delete args[key];
           }
         }
       }
