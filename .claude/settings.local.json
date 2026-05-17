@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm --filter @mcp-studio/client typecheck)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm lint:fix)",
+      "Bash(pnpm test:*)",
+      "Bash(node --input-type=module -e ':*)",
+      "Bash(npx tsx -e ':*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm install:*)",
+      "Bash(npx shadcn@latest add textarea switch -y)",
+      "Bash(npx @biomejs/biome check --write --unsafe .)",
+      "Bash(npx shadcn@latest add dialog -y)",
+      "Bash(gh pr create --base main --head feat/phase-1-connection-management --title 'feat: Phase 1 — Connection Management' --body ':*)"
+    ]
+  }
+}

@@ -14,7 +14,9 @@ import {
   updateResourceReadRecord,
   updateToolCallRecord,
 } from "../db/history-repository.js";
+import { insertScanResult } from "../db/scan-repository.js";
 import type { ConnectionManager } from "../mcp/connection-manager.js";
+import { createDefaultRegistry, runScan } from "../scanner/index.js";
 
 type WsClient = WSContext<WebSocket>;
 
@@ -242,6 +244,31 @@ export class WsHandler {
           id: request.id,
           type: "get-prompt",
           payload: result,
+        };
+      }
+
+      case "run-scan": {
+        const { connectionId } = request.payload as { connectionId: string };
+        const registry = createDefaultRegistry();
+
+        const result = await runScan(
+          connectionId,
+          this.manager,
+          registry,
+          (connId, rule, progress) => {
+            this.broadcast({
+              type: "scan:progress",
+              payload: { connectionId: connId, currentRule: rule, progress },
+            });
+          },
+        );
+
+        insertScanResult(result);
+
+        return {
+          id: request.id,
+          type: "run-scan",
+          payload: { result },
         };
       }
 

@@ -9,6 +9,7 @@ import {
 } from "../../packages/server/src/db/collections-repository.js";
 import { closeDb } from "../../packages/server/src/db/index.js";
 import { ConnectionManager } from "../../packages/server/src/mcp/connection-manager.js";
+import { createDefaultRegistry, runScan } from "../../packages/server/src/scanner/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ECHO_SERVER_PATH = path.resolve(__dirname, "../fixtures/echo-server/dist/index.js");
@@ -261,5 +262,51 @@ describe("Collections with echo-server", () => {
     // Cleanup
     deleteCollection(coll.id);
     expect(getCollectionById(coll.id)).toBeUndefined();
+  });
+});
+
+describe("Scanner with echo-server", () => {
+  const manager = new ConnectionManager();
+  let connectionId: string | undefined;
+
+  afterEach(async () => {
+    if (connectionId) {
+      try {
+        await manager.disconnect(connectionId);
+      } catch {
+        // already disconnected
+      }
+      connectionId = undefined;
+    }
+  });
+
+  afterAll(() => {
+    closeDb();
+  });
+
+  it("scans echo-server and produces valid results", async () => {
+    const connection = await manager.connect("scan-test", {
+      type: "stdio",
+      command: "node",
+      args: [ECHO_SERVER_PATH],
+    });
+    connectionId = connection.config.id;
+
+    const registry = createDefaultRegistry();
+    const result = await runScan(connectionId, manager, registry);
+
+    expect(result.score).toBeGreaterThan(0);
+    expect(result.score).toBeLessThanOrEqual(100);
+    expect(["A", "B", "C", "D", "F"]).toContain(result.grade);
+    expect(result.diagnostics.length).toBeGreaterThan(0);
+    expect(result.summary.total).toBe(16);
+    expect(result.connectionName).toBe("scan-test");
+    expect(result.durationMs).toBeGreaterThanOrEqual(0);
+
+    // Echo-server has short descriptions (< 20 chars) so tool-description-length should fire
+    const descLengthDiag = result.diagnostics.find(
+      (d) => d.ruleId === "quality/tool-description-length",
+    );
+    expect(descLengthDiag).toBeDefined();
   });
 });

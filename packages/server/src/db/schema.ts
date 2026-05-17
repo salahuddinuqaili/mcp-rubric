@@ -34,4 +34,18 @@ export const MIGRATIONS = [
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS scan_results (
+    id TEXT PRIMARY KEY,
+    connection_id TEXT NOT NULL,
+    connection_name TEXT NOT NULL,
+    server_info TEXT,
+    score INTEGER NOT NULL,
+    grade TEXT NOT NULL,
+    diagnostics TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    scanned_at TEXT NOT NULL,
+    duration_ms INTEGER NOT NULL
+  )`,
+  "CREATE INDEX IF NOT EXISTS idx_scans_connection ON scan_results(connection_id)",
+  "CREATE INDEX IF NOT EXISTS idx_scans_scanned_at ON scan_results(scanned_at)",
 ];
