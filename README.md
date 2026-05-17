@@ -4,7 +4,7 @@
 
 MCP Studio is [Postman](https://www.postman.com/) + [ESLint](https://eslint.org/) for the [Model Context Protocol](https://modelcontextprotocol.io/). Connect to any MCP server, browse its tools interactively, execute calls with a visual request builder, and run automated compliance scans — all from a single tool.
 
-> **Status:** Core features working (connect, explore, execute, history, collections). Scanner + CLI in progress.
+> **Status:** Phases 0–4 complete. Connect, explore, execute, history, collections, and scanner all functional. CLI in progress.
 
 ---
 
@@ -104,7 +104,7 @@ packages/
 - [x] Connection management + tool/resource/prompt explorer
 - [x] Interactive tool execution + resource reading
 - [x] Call history + collections
-- [ ] Compliance scanner (18+ rules, scoring, reports)
+- [x] Compliance scanner (16 rules, scoring, reports)
 - [ ] Production CLI + CI integration + theming
 
 ---
