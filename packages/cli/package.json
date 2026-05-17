@@ -1,11 +1,19 @@
 {
   "name": "@mcp-studio/cli",
   "version": "0.0.1",
-  "private": true,
+  "description": "Postman + ESLint for MCP servers — CLI for web UI and CI scanning",
   "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/salahuddinuqaili/mcp-studio.git",
+    "directory": "packages/cli"
+  },
+  "keywords": ["mcp", "model-context-protocol", "scanner", "linter", "cli", "developer-tools"],
   "bin": {
     "mcp-studio": "dist/index.js"
   },
+  "files": ["dist/"],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",

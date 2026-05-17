@@ -23,3 +23,9 @@ Lightweight state management. Minimal boilerplate, great TS support, no provider
 
 ## 2026-05-15: Correlated WS messages with UUID
 Every WS request includes a UUID `id`, echoed in response. Enables Promise-based `wsClient.request()`. Push events (status changes, progress) have no `id`. Rejected: sequential message ordering (fragile), separate channels per operation (complex).
+
+## 2026-05-17: Server package exports point to dist/, not src/
+Changed server's package.json exports from `./src/*.ts` to conditional exports with `types`/`import` pointing to `./dist/`. Source-pointing exports broke production (CLI importing compiled server couldn't resolve `.ts` files). Rejected: keeping src-pointing exports with tsx-only runtime (breaks published packages).
+
+## 2026-05-17: Production SPA serving via @hono/node-server/serve-static
+Added serveStatic middleware to `createApp()` with optional `clientDistPath` param. When the client dist exists, Hono serves it at `/` with SPA fallback to index.html. This lets `mcp-studio dev` serve the full app from a single port. Rejected: separate static file server (extra process), embedding assets in the binary (too complex for JS).
