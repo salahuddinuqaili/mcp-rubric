@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "exports": {
+    "./app.js": "./src/app.ts",
+    "./mcp/connection-manager.js": "./src/mcp/connection-manager.ts",
+    "./scanner/index.js": "./src/scanner/index.ts"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/index.ts",

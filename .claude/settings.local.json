@@ -17,7 +17,15 @@
       "Bash(npx shadcn@latest add textarea switch -y)",
       "Bash(npx @biomejs/biome check --write --unsafe .)",
       "Bash(npx shadcn@latest add dialog -y)",
-      "Bash(gh pr create --base main --head feat/phase-1-connection-management --title 'feat: Phase 1 — Connection Management' --body ':*)"
+      "Bash(gh pr create --base main --head feat/phase-1-connection-management --title 'feat: Phase 1 — Connection Management' --body ':*)",
+      "Bash(pnpm --filter @mcp-studio/cli typecheck)",
+      "Bash(pnpm --filter @mcp-studio/shared build)",
+      "Bash(pnpm --filter @mcp-studio/server build)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(ls:*)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(node --import tsx/esm packages/cli/src/index.ts scan --command node --args tests/fixtures/echo-server/dist/index.js --format json)",
+      "Bash(node --import tsx/esm ../../packages/cli/src/index.ts scan --command node --args ../../tests/fixtures/echo-server/dist/index.js --format json)"
     ]
   }
 }
