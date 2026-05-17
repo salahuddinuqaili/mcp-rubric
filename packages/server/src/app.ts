@@ -5,6 +5,7 @@ import { cors } from "hono/cors";
 import { ConnectionManager } from "./mcp/connection-manager.js";
 import { collectionsRoutes } from "./routes/collections.js";
 import { historyRoutes } from "./routes/history.js";
+import { scansRoutes } from "./routes/scans.js";
 import { WsHandler } from "./ws/handler.js";
 
 export function createApp() {
@@ -22,6 +23,7 @@ export function createApp() {
 
   app.route("/", historyRoutes);
   app.route("/", collectionsRoutes);
+  app.route("/", scansRoutes);
 
   app.get(
     WS_PATH,

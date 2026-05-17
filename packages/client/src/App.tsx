@@ -7,17 +7,10 @@ import { ExplorerPage } from "@/pages/ExplorerPage";
 import { HistoryPage } from "@/pages/HistoryPage";
 import { PromptDetailPage } from "@/pages/PromptDetailPage";
 import { ResourceDetailPage } from "@/pages/ResourceDetailPage";
+import { ScannerPage } from "@/pages/ScannerPage";
 import { ToolDetailPage } from "@/pages/ToolDetailPage";
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
-
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <div className="flex h-full items-center justify-center text-muted-foreground">
-      {title} — coming in a later phase
-    </div>
-  );
-}
 
 export function App() {
   useEffect(() => {
@@ -35,7 +28,7 @@ export function App() {
           <Route path="explorer/resources/*" element={<ResourceDetailPage />} />
           <Route path="explorer/prompts/:name" element={<PromptDetailPage />} />
           <Route path="history" element={<HistoryPage />} />
-          <Route path="scanner" element={<PlaceholderPage title="Scanner" />} />
+          <Route path="scanner" element={<ScannerPage />} />
           <Route path="collections" element={<CollectionsPage />} />
           <Route path="collections/:id" element={<CollectionDetailPage />} />
         </Route>
