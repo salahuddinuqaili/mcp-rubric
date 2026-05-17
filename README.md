@@ -1,5 +1,6 @@
 # MCP Studio
 
+[![SafeSkill 94/100](https://img.shields.io/badge/SafeSkill-94%2F100_Verified%20Safe-brightgreen)](https://safeskill.dev/scan/salahuddinuqaili-mcp-studio)
 **The compliance scanner and interactive playground for MCP servers.**
 
 MCP Studio is [Postman](https://www.postman.com/) + [ESLint](https://eslint.org/) for the [Model Context Protocol](https://modelcontextprotocol.io/). Connect to any MCP server, explore its tools visually, execute calls with auto-generated forms, and run automated compliance scans that score your server's protocol conformance, quality, and security. Tools like MCP Inspector let you debug; MCP Studio tells you if your server is good enough to ship.
