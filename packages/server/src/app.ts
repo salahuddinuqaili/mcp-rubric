@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { serveStatic } from "@hono/node-server/serve-static";
 import { createNodeWebSocket } from "@hono/node-ws";
 import { API_PREFIX, WS_PATH } from "@mcp-studio/shared";
 import { Hono } from "hono";
@@ -8,7 +10,11 @@ import { historyRoutes } from "./routes/history.js";
 import { scansRoutes } from "./routes/scans.js";
 import { WsHandler } from "./ws/handler.js";
 
-export function createApp() {
+export interface AppOptions {
+  clientDistPath?: string;
+}
+
+export function createApp(options: AppOptions = {}) {
   const app = new Hono();
   const manager = new ConnectionManager();
   const wsHandler = new WsHandler(manager);
@@ -40,6 +46,13 @@ export function createApp() {
       },
     })),
   );
+
+  // Serve built frontend assets in production mode
+  if (options.clientDistPath && existsSync(options.clientDistPath)) {
+    app.use("/*", serveStatic({ root: options.clientDistPath }));
+    // SPA fallback: serve index.html for unmatched routes
+    app.get("*", serveStatic({ root: options.clientDistPath, path: "index.html" }));
+  }
 
   return { app, injectWebSocket };
 }

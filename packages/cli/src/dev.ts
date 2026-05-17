@@ -1,8 +1,12 @@
+import { resolve } from "node:path";
 import { serve } from "@hono/node-server";
 import { createApp } from "@mcp-studio/server/app.js";
 
 export async function startDev(port: number): Promise<void> {
-  const { app, injectWebSocket } = createApp();
+  // Resolve client dist relative to this package (../../client/dist)
+  const clientDistPath = resolve(import.meta.dirname, "../../client/dist");
+
+  const { app, injectWebSocket } = createApp({ clientDistPath });
 
   const server = serve({ fetch: app.fetch, port }, (info) => {
     console.log(`MCP Studio running at http://localhost:${info.port}`);

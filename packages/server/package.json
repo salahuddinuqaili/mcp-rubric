@@ -4,9 +4,18 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./app.js": "./src/app.ts",
-    "./mcp/connection-manager.js": "./src/mcp/connection-manager.ts",
-    "./scanner/index.js": "./src/scanner/index.ts"
+    "./app.js": {
+      "types": "./dist/app.d.ts",
+      "import": "./dist/app.js"
+    },
+    "./mcp/connection-manager.js": {
+      "types": "./dist/mcp/connection-manager.d.ts",
+      "import": "./dist/mcp/connection-manager.js"
+    },
+    "./scanner/index.js": {
+      "types": "./dist/scanner/index.d.ts",
+      "import": "./dist/scanner/index.js"
+    }
   },
   "scripts": {
     "build": "tsc",
