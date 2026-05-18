@@ -1,8 +1,17 @@
 {
   "name": "@mcp-studio/server",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Hono backend for MCP Studio — connection manager, scanner engine, and SQLite persistence",
   "type": "module",
+  "license": "MIT",
+  "author": "Salahuddin Uqaili",
+  "homepage": "https://github.com/salahuddinuqaili/mcp-studio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/salahuddinuqaili/mcp-studio.git",
+    "directory": "packages/server"
+  },
+  "keywords": ["mcp", "model-context-protocol", "scanner", "hono", "backend"],
   "exports": {
     "./app.js": {
       "types": "./dist/app.d.ts",
@@ -17,11 +26,13 @@
       "import": "./dist/scanner/index.js"
     }
   },
+  "files": ["dist/", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc --noEmit",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",

@@ -15,7 +15,8 @@
     "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "publish:all": "pnpm -r publish --access public --no-git-checks"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

@@ -1,9 +1,11 @@
 {
   "name": "@mcp-studio/cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Postman + ESLint for MCP servers — CLI for web UI and CI scanning",
   "type": "module",
   "license": "MIT",
+  "author": "Salahuddin Uqaili",
+  "homepage": "https://github.com/salahuddinuqaili/mcp-studio",
   "repository": {
     "type": "git",
     "url": "https://github.com/salahuddinuqaili/mcp-studio.git",
@@ -13,11 +15,12 @@
   "bin": {
     "mcp-studio": "dist/index.js"
   },
-  "files": ["dist/"],
+  "files": ["dist/", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
