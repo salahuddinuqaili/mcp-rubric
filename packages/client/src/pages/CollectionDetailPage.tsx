@@ -16,7 +16,7 @@ interface RunResult {
 
 export function CollectionDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { collections, fetchAll, update } = useCollectionsStore();
+  const { collections, loading, fetchAll, update } = useCollectionsStore();
   const activeConnectionId = useConnectionStore((s) => s.activeConnectionId);
   const [running, setRunning] = useState(false);
   const [results, setResults] = useState<RunResult[] | null>(null);
@@ -28,6 +28,7 @@ export function CollectionDetailPage() {
   const collection = collections.find((c) => c.id === id);
 
   if (!collection) {
+    if (loading) return <p className="text-muted-foreground">Loading...</p>;
     return <p className="text-muted-foreground">Collection not found</p>;
   }
 
