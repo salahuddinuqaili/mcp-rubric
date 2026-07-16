@@ -25,7 +25,23 @@
       "Bash(ls:*)",
       "Bash(echo \"EXIT: $?\")",
       "Bash(node --import tsx/esm packages/cli/src/index.ts scan --command node --args tests/fixtures/echo-server/dist/index.js --format json)",
-      "Bash(node --import tsx/esm ../../packages/cli/src/index.ts scan --command node --args ../../tests/fixtures/echo-server/dist/index.js --format json)"
+      "Bash(node --import tsx/esm ../../packages/cli/src/index.ts scan --command node --args ../../tests/fixtures/echo-server/dist/index.js --format json)",
+      "Bash(pnpm build:*)",
+      "Bash(node:*)",
+      "Bash(npx kill-port:*)",
+      "WebSearch",
+      "Bash(pnpm dev:*)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill:*)",
+      "Bash(curl:*)",
+      "Bash(python -m json.tool)",
+      "Bash(cat node_modules/.pnpm/react-router@*/node_modules/react-router/package.json)",
+      "Bash(npx puppeteer:*)",
+      "Bash(git add:*)",
+      "Bash(gh pr:*)",
+      "Bash(git pull:*)",
+      "Bash(pnpm publish:*)",
+      "Bash(npm pack:*)"
     ]
   }
 }

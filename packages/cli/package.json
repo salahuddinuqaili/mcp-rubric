@@ -17,7 +17,7 @@
   },
   "files": ["dist/", "README.md", "LICENSE"],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').cpSync('../client/dist','dist/client',{recursive:true})\"",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm build"
