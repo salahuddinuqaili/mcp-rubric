@@ -1,6 +1,6 @@
-import type { ScanResult } from "@mcp-studio/shared";
-import { API_PREFIX } from "@mcp-studio/shared";
-import type { WsEvent } from "@mcp-studio/shared";
+import type { ScanResult } from "mcp-studio-shared";
+import { API_PREFIX } from "mcp-studio-shared";
+import type { WsEvent } from "mcp-studio-shared";
 import { create } from "zustand";
 import { wsClient } from "../lib/ws-client.js";
 

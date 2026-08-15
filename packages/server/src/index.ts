@@ -1,5 +1,5 @@
 import { serve } from "@hono/node-server";
-import { DEFAULT_BACKEND_PORT } from "@mcp-studio/shared";
+import { DEFAULT_BACKEND_PORT } from "mcp-studio-shared";
 import { createApp } from "./app.js";
 
 const { app, injectWebSocket } = createApp();

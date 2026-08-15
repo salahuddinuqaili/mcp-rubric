@@ -1,10 +1,14 @@
 node_modules/
 dist/
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 .env
 .env.local
 .vite/
 *.tsbuildinfo
+# Copied from the root README at build time so the npm page isn't blank
+/packages/cli/README.md
 .DS_Store
 Thumbs.db

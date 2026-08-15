@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
-import type { TransportConfig } from "@mcp-studio/shared";
-import { DEFAULT_BACKEND_PORT } from "@mcp-studio/shared";
 import { Command } from "commander";
+import type { TransportConfig } from "mcp-studio-shared";
+import { DEFAULT_BACKEND_PORT } from "mcp-studio-shared";
 import { startDev } from "./dev.js";
 import { runScanCommand } from "./scan.js";
 

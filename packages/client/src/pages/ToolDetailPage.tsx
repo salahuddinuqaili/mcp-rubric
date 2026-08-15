@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { wsClient } from "@/lib/ws-client";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
-import type { CollectionToolCall, ToolCallRecord } from "@mcp-studio/shared";
+import type { CollectionToolCall, ToolCallRecord } from "mcp-studio-shared";
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 

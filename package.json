@@ -8,7 +8,7 @@
   },
   "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "dev": "pnpm --filter @mcp-studio/server dev & pnpm --filter @mcp-studio/client dev",
+    "dev": "pnpm --filter mcp-studio-server dev & pnpm --filter mcp-studio-client dev",
     "build": "pnpm -r build",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",

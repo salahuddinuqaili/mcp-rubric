@@ -1,4 +1,4 @@
-import type { ResourceReadRecord, ToolCallRecord } from "@mcp-studio/shared";
+import type { ResourceReadRecord, ToolCallRecord } from "mcp-studio-shared";
 import { getDb } from "./index.js";
 
 // ============================================================

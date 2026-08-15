@@ -1,5 +1,5 @@
 {
-  "name": "@mcp-studio/shared",
+  "name": "mcp-studio-shared",
   "version": "0.1.0",
   "description": "Shared types, schemas, and constants for MCP Studio",
   "type": "module",

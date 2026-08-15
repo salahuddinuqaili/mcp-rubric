@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCollectionsStore } from "@/stores/collections-store";
-import type { CollectionItem } from "@mcp-studio/shared";
+import type { CollectionItem } from "mcp-studio-shared";
 import { useEffect, useState } from "react";
 
 interface SaveToCollectionDialogProps {

@@ -1,4 +1,4 @@
-import type { RuleDiagnostic, ScanResult } from "@mcp-studio/shared";
+import type { RuleDiagnostic, ScanResult } from "mcp-studio-shared";
 import type { ScannerRule } from "./rule-registry.js";
 
 export function calculateScore(

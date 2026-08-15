@@ -1,5 +1,5 @@
 {
-  "name": "@mcp-studio/cli",
+  "name": "mcp-studio",
   "version": "0.1.0",
   "description": "Postman + ESLint for MCP servers — CLI for web UI and CI scanning",
   "type": "module",
@@ -17,15 +17,15 @@
   },
   "files": ["dist/", "README.md", "LICENSE"],
   "scripts": {
-    "build": "tsc && node -e \"require('fs').cpSync('../client/dist','dist/client',{recursive:true})\"",
+    "build": "pnpm --filter mcp-studio-client build && tsc && node -e \"const fs=require('fs');fs.cpSync('../client/dist','dist/client',{recursive:true});fs.copyFileSync('../../README.md','README.md')\"",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
-    "@mcp-studio/server": "workspace:*",
-    "@mcp-studio/shared": "workspace:*",
+    "mcp-studio-server": "workspace:*",
+    "mcp-studio-shared": "workspace:*",
     "commander": "^13.1.0"
   },
   "devDependencies": {

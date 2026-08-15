@@ -1,6 +1,6 @@
-import { API_PREFIX } from "@mcp-studio/shared";
-import type { CollectionItem } from "@mcp-studio/shared";
 import { Hono } from "hono";
+import { API_PREFIX } from "mcp-studio-shared";
+import type { CollectionItem } from "mcp-studio-shared";
 import {
   createCollection,
   deleteCollection,

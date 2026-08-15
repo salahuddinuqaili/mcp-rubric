@@ -4,7 +4,7 @@
 
 Connect to any MCP server, explore its tools visually, execute calls with auto-generated forms, and run compliance scans that score protocol conformance, quality, and security. Debug with MCP Inspector; ship with MCP Studio.
 
-[![npm](https://img.shields.io/npm/v/@mcp-studio/cli)](https://www.npmjs.com/package/@mcp-studio/cli)
+[![npm](https://img.shields.io/npm/v/mcp-studio)](https://www.npmjs.com/package/mcp-studio)
 [![license](https://img.shields.io/github/license/salahuddinuqaili/mcp-studio)](./LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org/)
 

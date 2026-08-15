@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { serve } from "@hono/node-server";
-import { createApp } from "@mcp-studio/server/app.js";
+import { createApp } from "mcp-studio-server/app.js";
 
 export async function startDev(port: number): Promise<void> {
   // In production (npm install), client assets are copied into dist/client during build

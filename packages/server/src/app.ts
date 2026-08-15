@@ -1,9 +1,9 @@
 import { existsSync } from "node:fs";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { createNodeWebSocket } from "@hono/node-ws";
-import { API_PREFIX, WS_PATH } from "@mcp-studio/shared";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { API_PREFIX, WS_PATH } from "mcp-studio-shared";
 import { ConnectionManager } from "./mcp/connection-manager.js";
 import { collectionsRoutes } from "./routes/collections.js";
 import { historyRoutes } from "./routes/history.js";

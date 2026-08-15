@@ -1,4 +1,4 @@
-import type { RuleCategory, RuleDiagnostic, ValidationRule } from "@mcp-studio/shared";
+import type { RuleCategory, RuleDiagnostic, ValidationRule } from "mcp-studio-shared";
 import type { ScanContext } from "./context.js";
 
 export interface ScannerRule {
