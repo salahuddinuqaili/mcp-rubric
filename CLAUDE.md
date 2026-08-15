@@ -17,7 +17,7 @@ The backend is a proxy: browsers can't spawn stdio processes or hold MCP connect
 | `packages/shared` | `mcp-studio-shared` | Types, WS message schemas, constants. Zero runtime deps. |
 | `packages/server` | `mcp-studio-server` | Hono backend. ConnectionManager, scanner engine, SQLite DB. |
 | `packages/client` | `mcp-studio-client` | React SPA. Communicates only via WS + REST to server. |
-| `packages/cli` | `mcp-studio` | Published CLI binary. `mcp-studio` (web UI) and `mcp-studio scan` (CI). |
+| `packages/cli` | `mcp-studio` | CLI binary: web UI and `mcp-studio scan` (CI). Private — npm name undecided, see DECISIONS.md. |
 
 ## Commands
 

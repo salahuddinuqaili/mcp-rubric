@@ -4,7 +4,6 @@
 
 Connect to any MCP server, explore its tools visually, execute calls with auto-generated forms, and run compliance scans that score protocol conformance, quality, and security. Debug with MCP Inspector; ship with MCP Studio.
 
-[![npm](https://img.shields.io/npm/v/mcp-studio)](https://www.npmjs.com/package/mcp-studio)
 [![license](https://img.shields.io/github/license/salahuddinuqaili/mcp-studio)](./LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org/)
 
@@ -17,17 +16,7 @@ Connect to any MCP server, explore its tools visually, execute calls with auto-g
 
 ## Quick Start
 
-### Use it
-
-```bash
-# Launch the web UI
-npx mcp-studio
-
-# Scan a server in CI
-npx mcp-studio scan --command "node my-server.js" --min-score 80
-```
-
-### Develop it
+The CLI is not on npm yet — the obvious names are taken by unrelated projects and the published name is still being decided. Run it from source:
 
 ```bash
 git clone https://github.com/salahuddinuqaili/mcp-studio.git
@@ -38,6 +27,14 @@ pnpm dev
 ```
 
 Opens the playground at `http://localhost:5177` with the backend on `:3777`.
+
+For a headless scan without the UI:
+
+```bash
+node packages/cli/dist/index.js scan --command "node my-server.js" --min-score 80
+```
+
+The library packages are published: [`mcp-studio-server`](https://www.npmjs.com/package/mcp-studio-server) and [`mcp-studio-shared`](https://www.npmjs.com/package/mcp-studio-shared).
 
 ## CLI Reference
 
@@ -103,10 +100,12 @@ mcp-studio scan --config ./mcp-studio.config.json --min-score 80
 
 ### GitHub Actions
 
+Until the CLI is on npm, check it out and build it alongside your server:
+
 ```yaml
 - name: Scan MCP server
   run: |
-    npx mcp-studio scan \
+    node path/to/mcp-studio/packages/cli/dist/index.js scan \
       --command "node dist/server.js" \
       --min-score 80 \
       --format json
@@ -182,7 +181,7 @@ See [SPEC.md](./SPEC.md) for the product specification and [CLAUDE.md](./CLAUDE.
 
 ## Roadmap
 
-- [ ] Publish to npm (`npx mcp-studio`)
+- [ ] Settle a CLI package name and publish it (`mcp-studio` and `mcp-studio-cli` are both taken on npm by unrelated projects)
 - [ ] Error toasts and reconnect banner in web UI
 - [ ] Connection persistence (survive page reload)
 - [ ] Export/import collections as JSON

@@ -1,6 +1,7 @@
 {
   "name": "mcp-studio",
   "version": "0.1.0",
+  "private": true,
   "description": "Postman + ESLint for MCP servers — CLI for web UI and CI scanning",
   "type": "module",
   "license": "MIT",
