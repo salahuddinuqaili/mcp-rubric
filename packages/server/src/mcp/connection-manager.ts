@@ -1,5 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
+import {
+  PromptListChangedNotificationSchema,
+  ResourceListChangedNotificationSchema,
+  ToolListChangedNotificationSchema,
+} from "@modelcontextprotocol/sdk/types.js";
 import type {
   ConnectionStatus,
   ContentBlock,
@@ -13,14 +20,7 @@ import type {
   ServerConnectionConfig,
   ToolCallResult,
   TransportConfig,
-} from "@mcp-studio/shared";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
-import {
-  PromptListChangedNotificationSchema,
-  ResourceListChangedNotificationSchema,
-  ToolListChangedNotificationSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+} from "mcp-studio-shared";
 import { createTransport } from "./transport-factory.js";
 
 interface ManagedConnection {

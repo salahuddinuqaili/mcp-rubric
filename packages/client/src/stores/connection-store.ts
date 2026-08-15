@@ -3,8 +3,8 @@ import type {
   ServerCapabilities,
   ServerConnection,
   TransportConfig,
-} from "@mcp-studio/shared";
-import type { WsEvent } from "@mcp-studio/shared";
+} from "mcp-studio-shared";
+import type { WsEvent } from "mcp-studio-shared";
 import { create } from "zustand";
 import { wsClient } from "../lib/ws-client.js";
 

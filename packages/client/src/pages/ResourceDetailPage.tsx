@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { wsClient } from "@/lib/ws-client";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
-import type { CollectionResourceRead, ResourceReadRecord } from "@mcp-studio/shared";
+import type { CollectionResourceRead, ResourceReadRecord } from "mcp-studio-shared";
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 

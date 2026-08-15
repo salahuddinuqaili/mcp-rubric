@@ -14,10 +14,10 @@ The backend is a proxy: browsers can't spawn stdio processes or hold MCP connect
 
 | Package | Name | Role |
 |---------|------|------|
-| `packages/shared` | `@mcp-studio/shared` | Types, WS message schemas, constants. Zero runtime deps. |
-| `packages/server` | `@mcp-studio/server` | Hono backend. ConnectionManager, scanner engine, SQLite DB. |
-| `packages/client` | `@mcp-studio/client` | React SPA. Communicates only via WS + REST to server. |
-| `packages/cli` | `@mcp-studio/cli` | Published CLI binary. `mcp-studio` (web UI) and `mcp-studio scan` (CI). |
+| `packages/shared` | `mcp-studio-shared` | Types, WS message schemas, constants. Zero runtime deps. |
+| `packages/server` | `mcp-studio-server` | Hono backend. ConnectionManager, scanner engine, SQLite DB. |
+| `packages/client` | `mcp-studio-client` | React SPA. Communicates only via WS + REST to server. |
+| `packages/cli` | `mcp-studio` | Published CLI binary. `mcp-studio` (web UI) and `mcp-studio scan` (CI). |
 
 ## Commands
 
@@ -80,7 +80,7 @@ In dev, Vite proxies `/api/*` and `/ws` to the Hono backend. In production, the 
 - Don't use `any` — use `unknown` and narrow, or define proper types
 - Don't add dependencies to root `package.json` (except dev tools shared across all packages)
 - Don't put business logic in React components — extract to hooks, stores, or core
-- Don't hardcode MCP protocol constants — import from the SDK or `@mcp-studio/shared`
+- Don't hardcode MCP protocol constants — import from the SDK or `mcp-studio-shared`
 - Don't create REST endpoints for real-time operations — use WebSocket
 - Don't skip error handling on MCP client calls — servers can crash or return errors
 - Don't commit `.env` files or SQLite databases

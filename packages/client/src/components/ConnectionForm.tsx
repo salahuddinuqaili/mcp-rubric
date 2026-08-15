@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
-import type { TransportConfig, TransportType } from "@mcp-studio/shared";
+import type { TransportConfig, TransportType } from "mcp-studio-shared";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 

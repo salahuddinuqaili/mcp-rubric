@@ -1,4 +1,4 @@
-import type { ScanResult } from "@mcp-studio/shared";
+import type { ScanResult } from "mcp-studio-shared";
 import { getDb } from "./index.js";
 
 interface ScanResultRow {

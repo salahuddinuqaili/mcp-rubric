@@ -1,18 +1,29 @@
 {
-  "name": "@mcp-studio/shared",
-  "version": "0.0.1",
-  "private": true,
+  "name": "mcp-studio-shared",
+  "version": "0.1.0",
+  "description": "Shared types, schemas, and constants for MCP Studio",
   "type": "module",
+  "license": "MIT",
+  "author": "Salahuddin Uqaili",
+  "homepage": "https://github.com/salahuddinuqaili/mcp-studio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/salahuddinuqaili/mcp-studio.git",
+    "directory": "packages/shared"
+  },
+  "keywords": ["mcp", "model-context-protocol", "types", "shared"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
+  "files": ["dist/", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "typescript": "^5.7.3"

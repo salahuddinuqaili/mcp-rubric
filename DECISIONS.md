@@ -27,5 +27,11 @@ Every WS request includes a UUID `id`, echoed in response. Enables Promise-based
 ## 2026-05-17: Server package exports point to dist/, not src/
 Changed server's package.json exports from `./src/*.ts` to conditional exports with `types`/`import` pointing to `./dist/`. Source-pointing exports broke production (CLI importing compiled server couldn't resolve `.ts` files). Rejected: keeping src-pointing exports with tsx-only runtime (breaks published packages).
 
+## 2026-05-18: Publish all 3 packages to npm
+Publishing shared, server, and cli to npm (client stays private, bundled into CLI's static assets). Removed `"private": true` from shared and server. pnpm replaces `workspace:*` with real versions during publish, but only for non-private packages. Rejected: single-package publish with bundled deps (larger package, harder to debug), monorepo-to-single-file bundler (esbuild/rollup adds complexity, native modules like better-sqlite3 can't bundle).
+
+## 2026-08-15: Unscoped npm package names
+Renamed to `mcp-studio` (CLI), `mcp-studio-server`, `mcp-studio-shared`, `mcp-studio-client` (private). Scoped names required an npm org, and `npx mcp-studio` — the command the README advertises — only resolves to an unscoped package. Rejected: `@mcp-studio/*` scope (org creation overhead, `npx @mcp-studio/cli` is worse to type and remember).
+
 ## 2026-05-17: Production SPA serving via @hono/node-server/serve-static
 Added serveStatic middleware to `createApp()` with optional `clientDistPath` param. When the client dist exists, Hono serves it at `/` with SPA fallback to index.html. This lets `mcp-studio dev` serve the full app from a single port. Rejected: separate static file server (extra process), embedding assets in the binary (too complex for JS).

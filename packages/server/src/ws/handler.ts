@@ -1,12 +1,12 @@
 import { randomUUID } from "node:crypto";
+import type { WSContext } from "hono/ws";
 import type {
   CollectionItem,
   ToolCallRecord,
   WsEvent,
   WsRequest,
   WsResponse,
-} from "@mcp-studio/shared";
-import type { WSContext } from "hono/ws";
+} from "mcp-studio-shared";
 import { getCollectionById } from "../db/collections-repository.js";
 import {
   insertResourceReadRecord,

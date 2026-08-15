@@ -1,5 +1,5 @@
-import { API_PREFIX } from "@mcp-studio/shared";
 import { Hono } from "hono";
+import { API_PREFIX } from "mcp-studio-shared";
 import {
   deleteAllResourceReadRecords,
   deleteAllToolCallRecords,

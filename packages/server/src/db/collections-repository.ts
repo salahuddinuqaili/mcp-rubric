@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { Collection, CollectionItem } from "@mcp-studio/shared";
+import type { Collection, CollectionItem } from "mcp-studio-shared";
 import { getDb } from "./index.js";
 
 interface CollectionRow {

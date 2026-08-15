@@ -1,10 +1,10 @@
 import { resolve } from "node:path";
 import { serve } from "@hono/node-server";
-import { createApp } from "@mcp-studio/server/app.js";
+import { createApp } from "mcp-studio-server/app.js";
 
 export async function startDev(port: number): Promise<void> {
-  // Resolve client dist relative to this package (../../client/dist)
-  const clientDistPath = resolve(import.meta.dirname, "../../client/dist");
+  // In production (npm install), client assets are copied into dist/client during build
+  const clientDistPath = resolve(import.meta.dirname, "client");
 
   const { app, injectWebSocket } = createApp({ clientDistPath });
 

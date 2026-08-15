@@ -1,5 +1,5 @@
-import { REQUEST_TIMEOUT_MS, WS_PATH } from "@mcp-studio/shared";
-import type { WsEvent, WsRequest, WsResponse } from "@mcp-studio/shared";
+import { REQUEST_TIMEOUT_MS, WS_PATH } from "mcp-studio-shared";
+import type { WsEvent, WsRequest, WsResponse } from "mcp-studio-shared";
 
 type EventHandler = (event: WsEvent) => void;
 
