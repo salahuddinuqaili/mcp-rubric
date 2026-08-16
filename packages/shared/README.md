@@ -13,12 +13,7 @@ import { DEFAULT_BACKEND_PORT } from "mcp-studio-shared";
 import type { TransportConfig, ScanResult } from "mcp-studio-shared";
 ```
 
-Most people want the CLI instead:
-
-```bash
-npx mcp-studio          # web UI
-npx mcp-studio scan     # CI compliance scan
-```
+Most people want the CLI instead — it isn't on npm yet, so run it from the [repo](https://github.com/salahuddinuqaili/mcp-studio).
 
 ## License
 

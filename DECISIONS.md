@@ -30,6 +30,9 @@ Changed server's package.json exports from `./src/*.ts` to conditional exports w
 ## 2026-05-18: Publish all 3 packages to npm
 Publishing shared, server, and cli to npm (client stays private, bundled into CLI's static assets). Removed `"private": true` from shared and server. pnpm replaces `workspace:*` with real versions during publish, but only for non-private packages. Rejected: single-package publish with bundled deps (larger package, harder to debug), monorepo-to-single-file bundler (esbuild/rollup adds complexity, native modules like better-sqlite3 can't bundle).
 
+## 2026-08-15: CLI publish on hold — package name contested
+`mcp-studio` is unpublishable (npm's typosquat guard strips hyphens, colliding with `mcpstudio` v1.0.2) and `mcp-studio-cli` is owned by an unrelated project. Marked packages/cli private until the name is settled; `mcp-studio-server` and `mcp-studio-shared` are already published at 0.1.0. Rejected for now: `mcp-studio-app`/`-devtools` (free, but naming around a contested product identity is a decision worth making deliberately), `@mcp-studio-dev/*` (bakes a throwaway account name into the install command).
+
 ## 2026-08-15: Unscoped npm package names
 Renamed to `mcp-studio` (CLI), `mcp-studio-server`, `mcp-studio-shared`, `mcp-studio-client` (private). Scoped names required an npm org, and `npx mcp-studio` — the command the README advertises — only resolves to an unscoped package. Rejected: `@mcp-studio/*` scope (org creation overhead, `npx @mcp-studio/cli` is worse to type and remember).
 

@@ -14,12 +14,7 @@ import { runScan } from "mcp-studio-server/scanner/index.js";
 import { ConnectionManager } from "mcp-studio-server/mcp/connection-manager.js";
 ```
 
-Most people want the CLI instead:
-
-```bash
-npx mcp-studio          # web UI
-npx mcp-studio scan     # CI compliance scan
-```
+Most people want the CLI instead — it isn't on npm yet, so run it from the [repo](https://github.com/salahuddinuqaili/mcp-studio).
 
 ## License
 
