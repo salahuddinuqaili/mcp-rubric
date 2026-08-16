@@ -47,7 +47,7 @@ pnpm dev
 
 The backend and shared types are published separately as [`mcp-rubric-server`](https://www.npmjs.com/package/mcp-rubric-server) and [`mcp-rubric-shared`](https://www.npmjs.com/package/mcp-rubric-shared).
 
-> Rubric was called MCP Studio until 2026-08-16. If you installed `mcp-studio-server` or `mcp-studio-shared`, see [MIGRATION.md](https://github.com/salahuddinuqaili/mcp-rubric/blob/main/MIGRATION.md).
+> Rubric was called MCP Studio until 2026-08-16. If you installed `mcp-studio-server` or `mcp-studio-shared`, see [MIGRATION.md](https://github.com/salahuddinuqaili/mcp-rubric/blob/main/MIGRATION.md); [NAMING.md](https://github.com/salahuddinuqaili/mcp-rubric/blob/main/NAMING.md) explains why the rename happened and what npm's typosquat guard actually enforces.
 
 ## CLI Reference
 
