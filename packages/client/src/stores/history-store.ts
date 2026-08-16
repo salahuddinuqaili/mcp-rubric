@@ -1,5 +1,5 @@
-import type { ResourceReadRecord, ToolCallRecord } from "mcp-studio-shared";
-import { API_PREFIX } from "mcp-studio-shared";
+import type { ResourceReadRecord, ToolCallRecord } from "mcp-rubric-shared";
+import { API_PREFIX } from "mcp-rubric-shared";
 import { create } from "zustand";
 
 interface HistoryState {

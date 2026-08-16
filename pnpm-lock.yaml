@@ -26,10 +26,10 @@ importers:
       commander:
         specifier: ^13.1.0
         version: 13.1.0
-      mcp-studio-server:
+      mcp-rubric-server:
         specifier: workspace:*
         version: link:../server
-      mcp-studio-shared:
+      mcp-rubric-shared:
         specifier: workspace:*
         version: link:../shared
     devDependencies:
@@ -54,7 +54,7 @@ importers:
       lucide-react:
         specifier: ^1.16.0
         version: 1.16.0(react@19.2.6)
-      mcp-studio-shared:
+      mcp-rubric-shared:
         specifier: workspace:*
         version: link:../shared
       radix-ui:
@@ -118,7 +118,7 @@ importers:
       hono:
         specifier: ^4.7.5
         version: 4.12.18
-      mcp-studio-shared:
+      mcp-rubric-shared:
         specifier: workspace:*
         version: link:../shared
     devDependencies:

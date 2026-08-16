@@ -6,7 +6,7 @@ import type {
   WsEvent,
   WsRequest,
   WsResponse,
-} from "mcp-studio-shared";
+} from "mcp-rubric-shared";
 import { getCollectionById } from "../db/collections-repository.js";
 import {
   insertResourceReadRecord,

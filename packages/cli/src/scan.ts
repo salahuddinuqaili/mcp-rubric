@@ -1,6 +1,6 @@
-import { ConnectionManager } from "mcp-studio-server/mcp/connection-manager.js";
-import { createDefaultRegistry, runScan } from "mcp-studio-server/scanner/index.js";
-import type { ScanResult, TransportConfig } from "mcp-studio-shared";
+import { ConnectionManager } from "mcp-rubric-server/mcp/connection-manager.js";
+import { createDefaultRegistry, runScan } from "mcp-rubric-server/scanner/index.js";
+import type { ScanResult, TransportConfig } from "mcp-rubric-shared";
 
 interface ScanOptions {
   format: "table" | "json";

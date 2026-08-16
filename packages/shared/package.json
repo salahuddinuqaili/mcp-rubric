@@ -1,14 +1,17 @@
 {
-  "name": "mcp-studio-shared",
-  "version": "0.1.0",
-  "description": "Shared types, schemas, and constants for MCP Studio",
+  "name": "mcp-rubric-shared",
+  "version": "0.2.0",
+  "description": "Shared types, schemas, and constants for Rubric",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "license": "MIT",
   "author": "Salahuddin Uqaili",
-  "homepage": "https://github.com/salahuddinuqaili/mcp-studio",
+  "homepage": "https://github.com/salahuddinuqaili/mcp-rubric",
   "repository": {
     "type": "git",
-    "url": "https://github.com/salahuddinuqaili/mcp-studio.git",
+    "url": "https://github.com/salahuddinuqaili/mcp-rubric.git",
     "directory": "packages/shared"
   },
   "keywords": ["mcp", "model-context-protocol", "types", "shared"],

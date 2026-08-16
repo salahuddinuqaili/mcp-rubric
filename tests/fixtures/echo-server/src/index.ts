@@ -30,7 +30,7 @@ server.resource("Server information", "info://server", async () => ({
     {
       uri: "info://server",
       mimeType: "text/plain",
-      text: "Echo Server v0.0.1 — A test fixture for MCP Studio",
+      text: "Echo Server v0.0.1 — A test fixture for Rubric",
     },
   ],
 }));

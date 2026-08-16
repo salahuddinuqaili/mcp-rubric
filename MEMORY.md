@@ -1,2 +1,2 @@
-- [Product Vision](memory/project_vision.md) — MCP Studio goals, target users, ecosystem gap
+- [Product Vision](memory/project_vision.md) — Rubric goals, target users, ecosystem gap
 - [Tech Stack](memory/tech_stack.md) — Validated tech choices with reasoning (2026-05-15)

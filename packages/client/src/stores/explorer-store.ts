@@ -1,5 +1,5 @@
-import type { McpPrompt, McpResource, McpResourceTemplate, McpTool } from "mcp-studio-shared";
-import type { WsEvent } from "mcp-studio-shared";
+import type { McpPrompt, McpResource, McpResourceTemplate, McpTool } from "mcp-rubric-shared";
+import type { WsEvent } from "mcp-rubric-shared";
 import { create } from "zustand";
 import { wsClient } from "../lib/ws-client.js";
 

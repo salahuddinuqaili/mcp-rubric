@@ -1,40 +1,51 @@
-# MCP Studio
+# Rubric
 
 **Postman + ESLint for MCP servers.**
 
-Connect to any MCP server, explore its tools visually, execute calls with auto-generated forms, and run compliance scans that score protocol conformance, quality, and security. Debug with MCP Inspector; ship with MCP Studio.
+Connect to any MCP server, explore its tools visually, execute calls with auto-generated forms, and run compliance scans that score protocol conformance, quality, and security. Rubric grades how a server implements the MCP protocol — it is not an LLM evaluation harness. Debug with MCP Inspector; ship with Rubric.
 
-[![license](https://img.shields.io/github/license/salahuddinuqaili/mcp-studio)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/mcp-rubric)](https://www.npmjs.com/package/mcp-rubric)
+[![license](https://img.shields.io/github/license/salahuddinuqaili/mcp-rubric)](./LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org/)
 
 ## Features
 
 - **Compliance Scanner** — 16 built-in rules that score your server (A-F) across protocol, quality, and security categories
-- **CI Gate** — `mcp-studio scan --min-score 80` fails your pipeline if the server doesn't meet the bar
+- **CI Gate** — `--min-score 80` fails your pipeline if the server doesn't meet the bar
 - **Interactive Playground** — Connect via stdio/SSE/HTTP, browse tools/resources/prompts, execute calls with schema-generated forms
 - **History and Collections** — Persistent request log with timing, plus saved request groups you can replay
 
 ## Quick Start
 
-The CLI is not on npm yet — the obvious names are taken by unrelated projects and the published name is still being decided. Run it from source:
+Start the web UI — no install needed:
 
 ```bash
-git clone https://github.com/salahuddinuqaili/mcp-studio.git
-cd mcp-studio
+npx mcp-rubric
+```
+
+Serves the playground at `http://localhost:3777`. Pass `--port <port>` to use a different port.
+
+Run a headless scan for CI:
+
+```bash
+npx mcp-rubric scan --command node --args my-server.js --min-score 80
+```
+
+`--command` is the executable and `--args` are its arguments. The server is spawned without a shell, so passing a whole command line as `--command "node my-server.js"` fails on Linux and macOS (it works on Windows only because the spawn helper routes through `cmd.exe`). Always split it.
+
+### From source
+
+```bash
+git clone https://github.com/salahuddinuqaili/mcp-rubric.git
+cd mcp-rubric
 pnpm install
 pnpm build
 pnpm dev
 ```
 
-Opens the playground at `http://localhost:5177` with the backend on `:3777`.
+`pnpm dev` runs the Vite frontend at `http://localhost:5177` against the backend on `:3777`. It uses the POSIX `&` operator to run both, so on Windows use Git Bash or WSL rather than PowerShell.
 
-For a headless scan without the UI:
-
-```bash
-node packages/cli/dist/index.js scan --command "node my-server.js" --min-score 80
-```
-
-The library packages are published: [`mcp-studio-server`](https://www.npmjs.com/package/mcp-studio-server) and [`mcp-studio-shared`](https://www.npmjs.com/package/mcp-studio-shared).
+The backend and shared types are published separately as [`mcp-rubric-server`](https://www.npmjs.com/package/mcp-rubric-server) and [`mcp-rubric-shared`](https://www.npmjs.com/package/mcp-rubric-shared).
 
 ## CLI Reference
 
@@ -42,17 +53,17 @@ The library packages are published: [`mcp-studio-server`](https://www.npmjs.com/
 
 | Command | Description |
 |---------|-------------|
-| `mcp-studio` (default) | Start the web UI. Flag: `--port <port>` (default: 3777) |
-| `mcp-studio scan` | Run a headless compliance scan |
+| `mcp-rubric` (or `mcp-rubric dev`) | Start the web UI. Flag: `-p, --port <port>` (default: 3777) |
+| `mcp-rubric scan` | Run a headless compliance scan |
 
 ### Scan Flags
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--command <cmd>` | Command to start a stdio MCP server | — |
-| `--args <args...>` | Arguments passed to the command | — |
+| `--command <cmd>` | Executable to spawn for a stdio MCP server (no shell — see above) | — |
+| `--args <args...>` | Arguments passed to the executable | — |
 | `--url <url>` | URL for SSE or Streamable HTTP server | — |
-| `--transport <type>` | `stdio`, `sse`, or `streamable-http` | `stdio` |
+| `--transport <type>` | Only read alongside `--url`: `sse` selects SSE, anything else Streamable HTTP. Ignored with `--command` and `--config`. | `streamable-http` |
 | `--format <format>` | `table` or `json` | `table` |
 | `--min-score <n>` | Minimum passing score (exit 1 if below) | `0` |
 | `--config <path>` | Path to JSON connection config file | — |
@@ -71,13 +82,14 @@ The library packages are published: [`mcp-studio-server`](https://www.npmjs.com/
 Instead of passing flags, point to a JSON config:
 
 ```bash
-mcp-studio scan --config ./mcp-studio.config.json --min-score 80
+npx mcp-rubric scan --config ./rubric.config.json --min-score 80
 ```
+
+Only the `transport` object is read by `scan`.
 
 **Stdio server:**
 ```json
 {
-  "name": "my-server",
   "transport": {
     "type": "stdio",
     "command": "node",
@@ -90,7 +102,6 @@ mcp-studio scan --config ./mcp-studio.config.json --min-score 80
 **Remote SSE server:**
 ```json
 {
-  "name": "remote-server",
   "transport": {
     "type": "sse",
     "url": "http://localhost:3000/sse"
@@ -100,22 +111,20 @@ mcp-studio scan --config ./mcp-studio.config.json --min-score 80
 
 ### GitHub Actions
 
-Until the CLI is on npm, check it out and build it alongside your server:
-
 ```yaml
 - name: Scan MCP server
   run: |
-    node path/to/mcp-studio/packages/cli/dist/index.js scan \
-      --command "node dist/server.js" \
+    npx mcp-rubric scan \
+      --command node --args dist/server.js \
       --min-score 80 \
       --format json
 ```
 
 ## Scanner Rules
 
-Scoring: errors deduct full weight, warnings 50%, info 15%. Grade: A (90+), B (80+), C (70+), D (60+), F (<60).
+Scoring: each failing rule deducts once, by its declared severity — error costs the full weight, warning 50%, info 15%. Fifty violations of one rule cost the same as one. Grade: A (90+), B (80+), C (70+), D (60+), F (<60).
 
-MCP Studio ships 16 rules across three categories:
+Rubric ships 16 rules across three categories:
 
 ### Protocol Compliance (severity: error)
 
@@ -146,7 +155,7 @@ MCP Studio ships 16 rules across three categories:
 |------|---------------|
 | `security/no-wildcard-input-schema` | Input schemas are not empty `{}` (accept-anything) |
 | `security/no-secrets-in-descriptions` | No API keys, tokens, or passwords in description text |
-| `security/tools-have-input-validation` | Input schemas use constraints (minLength, enum, pattern, etc.) |
+| `security/tools-have-input-validation` | String properties declare constraints (minLength, pattern, enum, format) |
 
 ---
 
@@ -175,13 +184,12 @@ Built with TypeScript, React 19, Hono, better-sqlite3, and the official [@modelc
 | `pnpm lint` | Lint + format check (Biome) |
 | `pnpm test` | Run tests (Vitest) |
 
-See [SPEC.md](./SPEC.md) for the product specification and [CLAUDE.md](./CLAUDE.md) for code conventions.
+See [SPEC.md](https://github.com/salahuddinuqaili/mcp-rubric/blob/main/SPEC.md) for the product specification and [CLAUDE.md](https://github.com/salahuddinuqaili/mcp-rubric/blob/main/CLAUDE.md) for code conventions.
 
 ---
 
 ## Roadmap
 
-- [ ] Settle a CLI package name and publish it (`mcp-studio` and `mcp-studio-cli` are both taken on npm by unrelated projects)
 - [ ] Error toasts and reconnect banner in web UI
 - [ ] Connection persistence (survive page reload)
 - [ ] Export/import collections as JSON
@@ -190,7 +198,7 @@ See [SPEC.md](./SPEC.md) for the product specification and [CLAUDE.md](./CLAUDE.
 
 ## Contributing
 
-Issues and PRs welcome. See [SPEC.md](./SPEC.md) for product context.
+Issues and PRs welcome. See [SPEC.md](https://github.com/salahuddinuqaili/mcp-rubric/blob/main/SPEC.md) for product context.
 
 ## License
 
