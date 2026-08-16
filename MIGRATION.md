@@ -39,7 +39,7 @@ mv mcp-studio.db rubric.db
 
 `mcp-studio` cannot be published to npm. The registry's typosquat protection normalizes names by stripping punctuation, so `mcp-studio` collides with the pre-existing [`mcpstudio`](https://www.npmjs.com/package/mcpstudio) package and is rejected — even though `npm view mcp-studio` returns a clean 404. `mcp-studio-cli` was already taken by an unrelated project.
 
-Rather than pick a near-miss variant of a name two other projects already use, the product was renamed. A rubric is a published scoring guide — weighted criteria, levels, a grade — which is exactly what the compliance scanner is.
+Rather than pick a near-miss variant of a name two other projects already use, the product was renamed. The full reasoning, including the shortlist and the names that were rejected, is in [NAMING.md](./NAMING.md). A rubric is a published scoring guide — weighted criteria, levels, a grade — which is exactly what the compliance scanner is.
 
 ## One breaking change worth knowing
 
