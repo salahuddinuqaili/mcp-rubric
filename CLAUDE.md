@@ -1,6 +1,6 @@
-# MCP Studio
+# Rubric
 
-Postman + ESLint for MCP servers. See SPEC.md for full product spec.
+Postman + ESLint for MCP servers. It grades MCP protocol conformance — it is not an LLM evaluation harness. See SPEC.md for full product spec.
 
 ## Architecture
 
@@ -14,10 +14,10 @@ The backend is a proxy: browsers can't spawn stdio processes or hold MCP connect
 
 | Package | Name | Role |
 |---------|------|------|
-| `packages/shared` | `mcp-studio-shared` | Types, WS message schemas, constants. Zero runtime deps. |
-| `packages/server` | `mcp-studio-server` | Hono backend. ConnectionManager, scanner engine, SQLite DB. |
-| `packages/client` | `mcp-studio-client` | React SPA. Communicates only via WS + REST to server. |
-| `packages/cli` | `mcp-studio` | CLI binary: web UI and `mcp-studio scan` (CI). Private — npm name undecided, see DECISIONS.md. |
+| `packages/shared` | `mcp-rubric-shared` | Types, WS message schemas, constants. Zero runtime deps. |
+| `packages/server` | `mcp-rubric-server` | Hono backend. ConnectionManager, scanner engine, SQLite DB. |
+| `packages/client` | `mcp-rubric-client` | React SPA. Communicates only via WS + REST to server. Private — bundled into the CLI's static assets, never published. |
+| `packages/cli` | `mcp-rubric` | Published CLI binary `mcp-rubric`: web UI (`npx mcp-rubric`) and `mcp-rubric scan` (CI). |
 
 ## Commands
 
@@ -70,7 +70,7 @@ Singleton in `packages/server` that owns all MCP Client instances. All tool call
 Each rule implements `{ meta: ValidationRule, check(ctx): Promise<RuleDiagnostic[]> }`. Rules are pure functions registered in a `RuleRegistry`. Add new rules in `packages/server/src/scanner/rules/`.
 
 ### Zustand Stores
-Four stores: `connection-store`, `explorer-store`, `history-store`, `scanner-store`. Stores call `wsClient.request()` for real-time ops and `fetch()` for REST CRUD.
+Five stores: `connection-store`, `explorer-store`, `history-store`, `scanner-store`, `collections-store`. Stores call `wsClient.request()` for real-time ops and `fetch()` for REST CRUD.
 
 ### Vite Proxy
 In dev, Vite proxies `/api/*` and `/ws` to the Hono backend. In production, the CLI serves built frontend assets via Hono's `serveStatic`.
@@ -80,10 +80,10 @@ In dev, Vite proxies `/api/*` and `/ws` to the Hono backend. In production, the 
 - Don't use `any` — use `unknown` and narrow, or define proper types
 - Don't add dependencies to root `package.json` (except dev tools shared across all packages)
 - Don't put business logic in React components — extract to hooks, stores, or core
-- Don't hardcode MCP protocol constants — import from the SDK or `mcp-studio-shared`
+- Don't hardcode MCP protocol constants — import from the SDK or `mcp-rubric-shared`
 - Don't create REST endpoints for real-time operations — use WebSocket
 - Don't skip error handling on MCP client calls — servers can crash or return errors
-- Don't commit `.env` files or SQLite databases
+- Don't commit `.env` files or SQLite databases (`rubric.db` and its `-shm`/`-wal` siblings)
 
 ## Architecture Decisions
 

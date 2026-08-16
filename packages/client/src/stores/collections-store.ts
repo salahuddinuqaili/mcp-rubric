@@ -1,5 +1,5 @@
-import type { Collection, CollectionItem } from "mcp-studio-shared";
-import { API_PREFIX } from "mcp-studio-shared";
+import type { Collection, CollectionItem } from "mcp-rubric-shared";
+import { API_PREFIX } from "mcp-rubric-shared";
 import { create } from "zustand";
 
 interface CollectionsState {

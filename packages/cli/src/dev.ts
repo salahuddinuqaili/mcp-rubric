@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { serve } from "@hono/node-server";
-import { createApp } from "mcp-studio-server/app.js";
+import { createApp } from "mcp-rubric-server/app.js";
 
 export async function startDev(port: number): Promise<void> {
   // In production (npm install), client assets are copied into dist/client during build
@@ -9,7 +9,7 @@ export async function startDev(port: number): Promise<void> {
   const { app, injectWebSocket } = createApp({ clientDistPath });
 
   const server = serve({ fetch: app.fetch, port }, (info) => {
-    console.log(`MCP Studio running at http://localhost:${info.port}`);
+    console.log(`Rubric running at http://localhost:${info.port}`);
     console.log("Press Ctrl+C to stop");
   });
 

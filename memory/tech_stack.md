@@ -1,6 +1,6 @@
 ---
-name: MCP Studio tech stack decisions
-description: Validated tech stack choices with reasoning for MCP Studio
+name: Rubric tech stack decisions
+description: Validated tech stack choices with reasoning for Rubric
 type: project
 ---
 

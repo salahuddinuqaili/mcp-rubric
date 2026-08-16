@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { API_PREFIX } from "mcp-studio-shared";
+import { API_PREFIX } from "mcp-rubric-shared";
 import { getScanResultById, getScanResults } from "../db/scan-repository.js";
 
 export const scansRoutes = new Hono();

@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { wsClient } from "@/lib/ws-client";
 import { useConnectionStore } from "@/stores/connection-store";
 import { useExplorerStore } from "@/stores/explorer-store";
-import type { ContentBlock } from "mcp-studio-shared";
+import type { ContentBlock } from "mcp-rubric-shared";
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 

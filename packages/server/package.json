@@ -1,14 +1,17 @@
 {
-  "name": "mcp-studio-server",
-  "version": "0.1.0",
-  "description": "Hono backend for MCP Studio — connection manager, scanner engine, and SQLite persistence",
+  "name": "mcp-rubric-server",
+  "version": "0.2.0",
+  "description": "Hono backend for Rubric — connection manager, scanner engine, and SQLite persistence",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "license": "MIT",
   "author": "Salahuddin Uqaili",
-  "homepage": "https://github.com/salahuddinuqaili/mcp-studio",
+  "homepage": "https://github.com/salahuddinuqaili/mcp-rubric",
   "repository": {
     "type": "git",
-    "url": "https://github.com/salahuddinuqaili/mcp-studio.git",
+    "url": "https://github.com/salahuddinuqaili/mcp-rubric.git",
     "directory": "packages/server"
   },
   "keywords": ["mcp", "model-context-protocol", "scanner", "hono", "backend"],
@@ -37,7 +40,7 @@
   "dependencies": {
     "@hono/node-server": "^1.13.8",
     "@hono/node-ws": "^1.3.1",
-    "mcp-studio-shared": "workspace:*",
+    "mcp-rubric-shared": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.12.1",
     "better-sqlite3": "^11.8.1",
     "hono": "^4.7.5"

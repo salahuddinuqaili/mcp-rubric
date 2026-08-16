@@ -20,7 +20,7 @@ import type {
   ServerConnectionConfig,
   ToolCallResult,
   TransportConfig,
-} from "mcp-studio-shared";
+} from "mcp-rubric-shared";
 import { createTransport } from "./transport-factory.js";
 
 interface ManagedConnection {
@@ -49,7 +49,7 @@ export class ConnectionManager extends EventEmitter<ConnectionManagerEvents> {
     const config: ServerConnectionConfig = { id, name, transport };
 
     const mcpTransport = createTransport(transport);
-    const client = new Client({ name: "mcp-studio", version: "0.0.1" });
+    const client = new Client({ name: "mcp-rubric", version: "0.2.0" });
 
     const managed: ManagedConnection = {
       config,

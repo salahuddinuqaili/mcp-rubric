@@ -1,6 +1,6 @@
 import path from "node:path";
 import Database from "better-sqlite3";
-import { DB_FILENAME } from "mcp-studio-shared";
+import { DB_FILENAME } from "mcp-rubric-shared";
 import { MIGRATIONS } from "./schema.js";
 
 let db: Database.Database | null = null;

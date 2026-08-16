@@ -1,4 +1,4 @@
-# MCP Studio — Product Specification
+# Rubric — Product Specification
 
 > Postman + ESLint for MCP servers
 
@@ -15,7 +15,7 @@ The closest tool (MCP Inspector) is a minimal debugging utility, not a developer
 
 ## Vision
 
-MCP Studio is the **Postman for MCP** — a developer tool where you connect to any MCP server, browse its capabilities, execute tool calls interactively, save request collections, and run compliance/quality scans. Plus a CLI for CI pipelines.
+Rubric is the **Postman for MCP** — a developer tool where you connect to any MCP server, browse its capabilities, execute tool calls interactively, save request collections, and run compliance/quality scans. Plus a CLI for CI pipelines.
 
 ## Target Users
 
@@ -28,12 +28,12 @@ MCP Studio is the **Postman for MCP** — a developer tool where you connect to 
 ### 1. Server Connection Manager
 - Connect via stdio (spawn a local command), SSE, or Streamable HTTP
 - Multiple simultaneous connections
-- Auto-reconnect on disconnect
-- Recent connections saved for quick access
+- Auto-reconnect between browser and backend (dropped MCP connections are marked disconnected, not retried)
+- Recent connections saved for quick access _(planned)_
 
 ### 2. Tool Explorer
 - Browse all tools, resources, and prompts from connected servers
-- Search/filter by name
+- Search/filter by name _(planned)_
 - View full schema details, descriptions, annotations
 - Visual schema tree for input/output schemas
 
@@ -41,8 +41,8 @@ MCP Studio is the **Postman for MCP** — a developer tool where you connect to 
 - Auto-generated form from tool input schemas (text fields, dropdowns, toggles)
 - Raw JSON editor fallback for complex inputs
 - Execute tool calls with one click
-- Response viewer with syntax highlighting, timing, and content type rendering
-- Support for text, image, audio, and resource content blocks
+- Response viewer with timing and content type rendering
+- Renders text and image content blocks (audio and resource blocks _planned_)
 
 ### 4. Resource Reader
 - Browse and read server resources by URI
@@ -56,7 +56,7 @@ MCP Studio is the **Postman for MCP** — a developer tool where you connect to 
 
 ### 6. Call History
 - Persistent log of all tool calls, resource reads
-- Filterable by server, tool name, status, date range
+- Filterable by server, tool name, status, date range _(planned)_
 - Expandable rows showing full arguments and results
 - Timing data for performance analysis
 - Clear/delete individual records or all history
@@ -65,7 +65,7 @@ MCP Studio is the **Postman for MCP** — a developer tool where you connect to 
 - Save tool calls and resource reads as named collections
 - Organize related requests together (like Postman collections)
 - "Run All" to execute an entire collection sequentially
-- Export/import collections as JSON
+- Export/import collections as JSON _(planned)_
 
 ### 8. Compliance Scanner
 - One-click scan of a connected server
@@ -78,7 +78,7 @@ MCP Studio is the **Postman for MCP** — a developer tool where you connect to 
 - Scan history for tracking improvement over time
 
 ### 9. CLI for CI
-- `mcp-studio scan --command "node server.js"` — headless scanning
+- `mcp-rubric scan --command node --args server.js` — headless scanning
 - Table and JSON output formats
 - `--min-score` flag with exit codes for CI gates
 - Config file support for complex connection configs
@@ -209,7 +209,7 @@ Top header with breadcrumbs and active connection info.
 
 - Each rule has a weight (0-10)
 - Score = (maxPoints - penalties) / maxPoints * 100
-- Penalties: error = full weight, warning = 50%, info = 15%
+- Penalties applied once per failing rule, by the rule's declared severity: error = full weight, warning = 50%, info = 15%
 - Grade: A (90+), B (80+), C (70+), D (60+), F (<60)
 
 ---
@@ -258,19 +258,19 @@ Production CLI (`dev` + `scan` commands). CI integration, theming, documentation
 
 ```
 # Start the web UI
-mcp-studio
+mcp-rubric
 
 # Scan a stdio server
-mcp-studio scan --command "node my-server.js" --format table
+mcp-rubric scan --command node --args my-server.js --format table
 
 # Scan with minimum score (CI gate)
-mcp-studio scan --command "npx my-mcp-server" --min-score 80 --format json
+mcp-rubric scan --command npx --args my-mcp-server --min-score 80 --format json
 
 # Scan a remote SSE server
-mcp-studio scan --url http://localhost:3000/sse --transport sse
+mcp-rubric scan --url http://localhost:3000/sse --transport sse
 
 # Scan from config file
-mcp-studio scan --config ./mcp-studio.config.json
+mcp-rubric scan --config ./rubric.config.json
 ```
 
 ### Exit Codes
@@ -280,4 +280,4 @@ mcp-studio scan --config ./mcp-studio.config.json
 | 0 | Score >= --min-score |
 | 1 | Score < --min-score |
 | 2 | Connection failure |
-| 3 | Internal error |
+| 3 | Internal error or missing required flags |

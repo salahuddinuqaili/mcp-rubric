@@ -28,7 +28,7 @@ export function ServerSidebar() {
     <aside className="flex h-screen w-56 flex-col border-r border-border bg-card">
       <div className="flex items-center justify-between p-4">
         <Link to="/" className="text-lg font-bold tracking-tight">
-          MCP Studio
+          Rubric
         </Link>
       </div>
 

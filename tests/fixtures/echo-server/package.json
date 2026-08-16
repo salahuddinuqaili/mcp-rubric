@@ -1,5 +1,5 @@
 {
-  "name": "@mcp-studio/echo-server",
+  "name": "@mcp-rubric/echo-server",
   "version": "0.0.1",
   "private": true,
   "type": "module",

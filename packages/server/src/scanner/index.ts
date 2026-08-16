@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { RuleDiagnostic, ScanResult } from "mcp-studio-shared";
+import type { RuleDiagnostic, ScanResult } from "mcp-rubric-shared";
 import type { ConnectionManager } from "../mcp/connection-manager.js";
 import type { ScanContext } from "./context.js";
 import { RuleRegistry } from "./rule-registry.js";

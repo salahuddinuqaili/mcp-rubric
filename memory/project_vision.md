@@ -1,10 +1,10 @@
 ---
-name: MCP Studio product vision
-description: Product vision, target users, and goals for MCP Studio
+name: Rubric product vision
+description: Product vision, target users, and goals for Rubric
 type: project
 ---
 
-MCP Studio is "Postman + ESLint for MCP servers" — an open-source developer tool for exploring, testing, and validating MCP servers.
+Rubric is "Postman + ESLint for MCP servers" — an open-source developer tool for exploring, testing, and validating MCP servers.
 
 **Why:** The MCP ecosystem has 85K+ stars on server repos but zero quality tooling. No interactive playground, no testing framework, no compliance scanner. This is the biggest gap in the ecosystem.
 

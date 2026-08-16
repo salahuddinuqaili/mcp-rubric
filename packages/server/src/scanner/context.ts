@@ -1,4 +1,4 @@
-import type { McpPrompt, McpResource, McpTool, ServerCapabilities } from "mcp-studio-shared";
+import type { McpPrompt, McpResource, McpTool, ServerCapabilities } from "mcp-rubric-shared";
 
 export interface ScanContext {
   connectionId: string;
