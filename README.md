@@ -5,6 +5,7 @@
 Connect to any MCP server, explore its tools visually, execute calls with auto-generated forms, and run compliance scans that score protocol conformance, quality, and security. Rubric grades how a server implements the MCP protocol — it is not an LLM evaluation harness. Debug with MCP Inspector; ship with Rubric.
 
 [![npm](https://img.shields.io/npm/v/mcp-rubric)](https://www.npmjs.com/package/mcp-rubric)
+[![CI](https://github.com/salahuddinuqaili/mcp-rubric/actions/workflows/ci.yml/badge.svg)](https://github.com/salahuddinuqaili/mcp-rubric/actions/workflows/ci.yml)
 [![license](https://img.shields.io/github/license/salahuddinuqaili/mcp-rubric)](./LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org/)
 

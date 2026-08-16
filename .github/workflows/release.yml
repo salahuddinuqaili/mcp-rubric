@@ -1,0 +1,59 @@
+name: Release
+
+# Publishes every non-private workspace package when a version tag is pushed.
+#
+# Auth is npm trusted publishing (OIDC) — no NPM_TOKEN secret. It requires a
+# one-time setup per package on npmjs.com: Settings -> Trusted publishers ->
+# GitHub Actions, pointing at this repo and the workflow file name below.
+# Configure it for mcp-rubric, mcp-rubric-server, and mcp-rubric-shared, or this
+# workflow will fail with a 401/403 at the publish step.
+#
+# Publishing this way also attaches provenance, so npm shows where each tarball
+# was built from.
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for OIDC trusted publishing
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      # Trusted publishing needs a recent npm; the bundled one may predate it.
+      - run: npm install -g npm@latest
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      - run: pnpm typecheck
+
+      - run: pnpm lint
+
+      - run: pnpm test
+
+      - name: Verify the tag matches the CLI version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg=$(node -p "require('./packages/cli/package.json').version")
+          if [ "$tag" != "$pkg" ]; then
+            echo "tag $GITHUB_REF_NAME does not match packages/cli version $pkg"
+            exit 1
+          fi
+
+      - name: Publish to npm
+        run: pnpm -r publish --access public --no-git-checks --provenance

@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    # Both platforms on purpose: the stdio transport spawns servers differently on
+    # Windows (cross-spawn routes through cmd.exe) than on Linux, which is how a
+    # broken scan invocation shipped in the docs while passing locally.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      - run: pnpm typecheck
+
+      - run: pnpm lint
+
+      - run: pnpm test
+
+  dogfood:
+    # Rubric scans an MCP server against its own rules. Run it on the echo fixture
+    # so a regression in the scanner fails this repo's own pipeline.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      - name: Scan the echo fixture
+        run: |
+          node packages/cli/dist/index.js scan \
+            --command node \
+            --args tests/fixtures/echo-server/dist/index.js \
+            --min-score 80 \
+            --format table
+
+      - name: Scan again as JSON and assert the payload
+        run: |
+          node packages/cli/dist/index.js scan \
+            --command node \
+            --args tests/fixtures/echo-server/dist/index.js \
+            --format json > scan.json
+          node -e "
+            const r = JSON.parse(require('fs').readFileSync('scan.json', 'utf8'));
+            if (typeof r.score !== 'number' || !r.grade) throw new Error('scan output missing score/grade');
+            console.log('score=' + r.score + ' grade=' + r.grade);
+          "
+
+      - name: Reject a non-numeric min-score
+        run: |
+          set +e
+          node packages/cli/dist/index.js scan \
+            --command node \
+            --args tests/fixtures/echo-server/dist/index.js \
+            --min-score not-a-number
+          code=$?
+          set -e
+          if [ "$code" -ne 3 ]; then
+            echo "expected exit 3 for a non-numeric --min-score, got $code"
+            exit 1
+          fi
+
+      - name: Reject an unreadable config
+        run: |
+          set +e
+          node packages/cli/dist/index.js scan --config ./no-such-config.json
+          code=$?
+          set -e
+          if [ "$code" -ne 3 ]; then
+            echo "expected exit 3 for an unreadable --config, got $code"
+            exit 1
+          fi
